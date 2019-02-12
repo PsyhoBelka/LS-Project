@@ -7,9 +7,9 @@ public interface DAO<T> {
      * Create new entity
      *
      * @param newEntity new entity to save
-     * @return true, if operation successfully
+     * @return id of newly created entity
      */
-    boolean create(T newEntity);
+    long create(T newEntity);
 
     /**
      * Get entity with specified id

@@ -13,9 +13,9 @@ public interface ClientService {
      * @param age         age of client
      * @param phoneNumber phone number of new client
      * @param email       client's email
-     * @return true, if operation successfully
+     * @return id of newly created client
      */
-    boolean createClient(String name, String surname, int age, String phoneNumber, String email);
+    long createClient(String name, String surname, int age, String phoneNumber, String email);
 
     /**
      * Show client's info

@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ProductDAOImpl implements ProductDAO {
     @Override
-    public boolean create(Product newEntity) {
+    public long create(Product newEntity) {
         System.out.println("Product created! "+newEntity);
-        return true;
+        return 0;
     }
 
     @Override

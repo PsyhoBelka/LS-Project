@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    boolean createProduct(String name, BigDecimal price);
+    long createProduct(String name, BigDecimal price);
 
     Product readProduct(long id);
 

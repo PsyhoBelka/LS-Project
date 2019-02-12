@@ -11,7 +11,7 @@ public class ClientServiceImpl implements ClientService {
     private ClientDAO clientDAO = new ClientDAOImpl();
 
     @Override
-    public boolean createClient(String name, String surname, int age, String phoneNumber, String email) {
+    public long createClient(String name, String surname, int age, String phoneNumber, String email) {
         Client newClient = new Client(name, surname, age, phoneNumber, email);
         return clientDAO.create(newClient);
     }

@@ -16,10 +16,10 @@ public class ProductServiceImpl implements ProductService {
      *
      * @param name  name of new product
      * @param price price of new product
-     * @return true, if operation successfully
+     * @return id of newly created product
      */
     @Override
-    public boolean createProduct(String name, BigDecimal price) {
+    public long createProduct(String name, BigDecimal price) {
         Product newProduct = new Product(name, price);
         return productDAO.create(newProduct);
     }

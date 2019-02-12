@@ -7,9 +7,9 @@ import java.util.List;
 
 public class ClientDAOImpl implements ClientDAO {
     @Override
-    public boolean create(Client newEntity) {
+    public long create(Client newEntity) {
         System.out.println("Client created! "+newEntity);
-        return true;
+        return 0;
     }
 
     @Override
