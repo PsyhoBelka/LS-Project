@@ -17,15 +17,17 @@ public class MainMenu {
             showVariants();
             System.out.print("Your choice: ");
             String input = bufferedReader.readLine();
-            System.out.println();
 
             switch (input) {
                 case "1":
+//                    System.out.println("Show admin menu");
                     adminMenu.show();
                     break;
                 case "2":
-                    System.out.println("Show client menu");
+//                    System.out.println("Show client menu");
+                    clientMenu.show();
                     break;
+
                 case "0":
                     isRunning = false;
                     break;
