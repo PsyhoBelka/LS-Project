@@ -13,23 +13,17 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public boolean createClient(String name, String surname, int age, String phoneNumber, String email) {
         Client newClient = new Client(name, surname, age, phoneNumber, email);
-        boolean result = clientDAO.create(newClient);
-        if (result) {
-            System.out.println("Client created! " + newClient);
-        }
-        return result;
+        return clientDAO.create(newClient);
     }
 
     @Override
     public Client readClient(long idClient) {
-        clientDAO.get(idClient);
-        return null;
+        return clientDAO.get(idClient);
     }
 
     @Override
     public List<Client> readAllClients() {
-        clientDAO.getAll();
-        return null;
+        return clientDAO.getAll();
     }
 
     @Override
@@ -40,18 +34,12 @@ public class ClientServiceImpl implements ClientService {
         if (age != 0) updatedClient.setAge(age);
         if (!phoneNumber.equals("")) updatedClient.setPhoneNumber(phoneNumber);
         if (!email.equals("")) updatedClient.setEmail(email);
-        boolean result = clientDAO.update(idClient, updatedClient);
-        if (result) System.out.println("Client updated!");
-        return result;
+        return clientDAO.update(idClient, updatedClient);
     }
 
     @Override
     public boolean deleteClient(long idClient) {
-        boolean result = clientDAO.delete(idClient);
-        if (result){
-            System.out.println("Client deleted!");
-        }
-        return result;
+        return clientDAO.delete(idClient);
     }
 
 }

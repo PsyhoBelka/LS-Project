@@ -8,18 +8,13 @@ public class Client {
     private String phoneNumber;
     private String email;
 
-    public Client(String name, String surname, int age, String phoneNumber, String email) {
+    public Client(String name, String surname, int age,
+                  String phoneNumber, String email) {
         this.name = name;
         this.surname = surname;
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.email = email;
-    }
-
-    public Client(String name, String surname, String phoneNumber) {
-        this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
     }
 
     @Override
