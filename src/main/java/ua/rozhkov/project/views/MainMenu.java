@@ -1,4 +1,47 @@
 package ua.rozhkov.project.views;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class MainMenu {
+
+    private final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    private final AdminMenu adminMenu = new AdminMenu();
+    private final ClientMenu clientMenu = new ClientMenu();
+
+    public void show() throws IOException {
+        boolean isRunning = true;
+
+        while (isRunning) {
+            showVariants();
+            System.out.print("Your choice: ");
+            String input = bufferedReader.readLine();
+            System.out.println();
+
+            switch (input) {
+                case "1":
+                    adminMenu.show();
+                    break;
+                case "2":
+                    System.out.println("Show client menu");
+                    break;
+                case "0":
+                    isRunning = false;
+                    break;
+                default:
+                    System.out.println("Wrong input!!!");
+                    break;
+            }
+
+            System.out.println();
+        }
+    }
+
+    private void showVariants() {
+        System.out.println();
+        System.out.println("1. Admin");
+        System.out.println("2. Client");
+        System.out.println("0. Exit");
+    }
 }

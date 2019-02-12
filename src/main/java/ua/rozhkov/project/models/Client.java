@@ -1,4 +1,4 @@
-package ua.rozhkov.project.dao;
+package ua.rozhkov.project.models;
 
 public class Client {
     private long id;
@@ -14,6 +14,12 @@ public class Client {
         this.age = age;
         this.phoneNumber = phoneNumber;
         this.email = email;
+    }
+
+    public Client(String name, String surname, String phoneNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
