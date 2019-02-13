@@ -56,7 +56,7 @@ public class AdminMenu {
                     isRunning = false;
                     break;
                 case "0":
-                    System.exit(1);
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Wrong input!!!");
@@ -97,7 +97,6 @@ public class AdminMenu {
     }
 
     //CLIENT MENU METHODS
-
     private void createClient() throws IOException {
         System.out.print("Enter name: ");
         String clientName = bufferedReader.readLine();

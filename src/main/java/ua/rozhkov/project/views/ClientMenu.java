@@ -14,25 +14,20 @@ public class ClientMenu {
             showVariants();
             String input = bufferedReader.readLine();
 
-            switch (input) {
-                case "1":
-                    System.out.println("1. Show products");
+            switch (input) {//TODO do menu for products
+                case "1"://1. Show products
                     break;
-                case "2":
-                    System.out.println("2. Order product");
+                case "2"://2. Order product
                     break;
-                case "3":
-                    System.out.println("3. Show bucket");
+                case "3"://3. Show bucket
                     break;
-                case "4":
-                    System.out.println("4. Close order and buy");
+                case "4"://4. Close order and buy
                     break;
-                case "9":
-                    System.out.println("9. Return");
+                case "9"://9. Return
                     isRunning = false;
                     break;
                 case "0":
-                    System.exit(1);
+                    System.exit(0);
                     break;
                 default:
                     System.out.println("Wrong input!!!");

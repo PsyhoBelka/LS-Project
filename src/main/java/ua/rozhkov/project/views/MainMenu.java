@@ -19,12 +19,10 @@ public class MainMenu {
             String input = bufferedReader.readLine();
 
             switch (input) {
-                case "1":
-//                    System.out.println("Show admin menu");
+                case "1"://Show admin menu
                     adminMenu.show();
                     break;
-                case "2":
-//                    System.out.println("Show client menu");
+                case "2"://Show client menu
                     clientMenu.show();
                     break;
 
@@ -41,7 +39,6 @@ public class MainMenu {
     }
 
     private void showVariants() {
-        System.out.println();
         System.out.println("1. Admin");
         System.out.println("2. Client");
         System.out.println("0. Exit");
