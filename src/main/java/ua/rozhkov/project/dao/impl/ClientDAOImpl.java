@@ -6,9 +6,20 @@ import ua.rozhkov.project.models.Client;
 import java.util.List;
 
 public class ClientDAOImpl implements ClientDAO {
+    private static ClientDAOImpl instance;
+
+    public ClientDAOImpl() {
+    }
+
+    public static ClientDAOImpl getInstance() {
+        if (instance == null) return new ClientDAOImpl();
+        else
+            return instance;
+    }
+
     @Override
     public long create(Client newEntity) {
-        System.out.println("Client created! "+newEntity);
+        System.out.println("Client created! " + newEntity);
         return 0;
     }
 

@@ -9,10 +9,11 @@ public interface OrderService {
     /**
      * Create new order for specified client
      *
-     * @param clientForOrder client for which order will link to
+     * @param client      client, who ordering
+     * @param idsProducts products-id to create order
      * @return id of newly created order
      */
-    long createOrder(Client clientForOrder);
+    long createOrder(Client client, long[] idsProducts);
 
     /**
      * Read order by id
@@ -31,22 +32,11 @@ public interface OrderService {
     BigDecimal calculateOrder(long id);
 
     /**
-     * Add to order new product
-     *
-     * @param id             order-id where to add product
-     * @param idProductToAdd product-id, which will add to order
+     * Update order status
+     * @param idOrder order-id to update status
      * @return true, if operation successfully
      */
-    boolean addToOrder(long id, long idProductToAdd);
-
-    /**
-     * Remove from order specified product
-     *
-     * @param id                product-id, which need to remove from order
-     * @param idProductToRemove product-id, which will remove from order
-     * @return true, if operation successfully
-     */
-    boolean removeFromOrder(long id, long idProductToRemove);
+    boolean updateOrderStatus(long idOrder);
 
     /**
      * Delete specified order

@@ -8,7 +8,17 @@ import ua.rozhkov.project.services.ClientService;
 import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
-    private ClientDAO clientDAO = new ClientDAOImpl();
+    private static ClientServiceImpl instance;
+    private ClientDAO clientDAO = ClientDAOImpl.getInstance();
+
+    public ClientServiceImpl() {
+    }
+
+    public static ClientServiceImpl getInstance() {
+        if (instance == null) return new ClientServiceImpl();
+        else
+            return instance;
+    }
 
     @Override
     public long createClient(String name, String surname, int age, String phoneNumber, String email) {
