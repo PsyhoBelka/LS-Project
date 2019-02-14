@@ -1,5 +1,7 @@
 package ua.rozhkov.project.views;
 
+import ua.rozhkov.project.models.OrderStatus;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,6 +14,8 @@ public class MainMenu {
 
     public void show() throws IOException {
         boolean isRunning = true;
+
+        System.out.println(OrderStatus.values()[0]);
 
         while (isRunning) {
             showVariants();

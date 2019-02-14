@@ -1,6 +1,8 @@
 package ua.rozhkov.project.views;
 
 import ua.rozhkov.project.models.Client;
+import ua.rozhkov.project.services.OrderService;
+import ua.rozhkov.project.services.ProductService;
 import ua.rozhkov.project.services.impl.OrderServiceImpl;
 import ua.rozhkov.project.services.impl.ProductServiceImpl;
 
@@ -10,8 +12,8 @@ import java.io.InputStreamReader;
 
 public class ClientMenu {
     private final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-    private final ProductServiceImpl productService = ProductServiceImpl.getInstance();
-    private final OrderServiceImpl orderService = OrderServiceImpl.getInstance();
+    private final ProductService productService = ProductServiceImpl.getInstance();
+    private final OrderService orderService = OrderServiceImpl.getInstance();
 
     public void show() throws IOException {
         boolean isRunning = true;
@@ -52,7 +54,8 @@ public class ClientMenu {
         for (int i = 0; i < idsList.length - 1; i++) {
             ids[i] = Long.parseLong(idsList[i]);
         }
-        orderService.createOrder(new Client("111", "111", 21, "11", "11"), ids);
+        long newOrderId = orderService.createOrder(new Client("111", "111", 21, "11", "11"), ids);
+        System.out.println(orderService.calculateOrder(newOrderId));
     }
 
     private void showVariants() {

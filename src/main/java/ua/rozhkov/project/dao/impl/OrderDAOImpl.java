@@ -24,16 +24,21 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public Order get(long idEntity) {
+        System.out.println("Some order");
         return null;
     }
 
     @Override
     public List<Order> getAll() {
+        System.out.println("Order 1");
+        System.out.println("Order 2");
+        System.out.println("Order 3");
         return null;
     }
 
     @Override
     public boolean update(long idEntity, Order updatedEntity) {
+        System.out.println("Updated successfully!");
         return false;
     }
 

@@ -1,5 +1,6 @@
 package ua.rozhkov.project.views;
 
+import ua.rozhkov.project.models.OrderStatus;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 
 public class AdminMenu {
     private final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+
     private final ClientService clientService = ClientServiceImpl.getInstance();
     private final ProductService productService = ProductServiceImpl.getInstance();
     private final OrderService orderService = OrderServiceImpl.getInstance();
@@ -22,6 +24,7 @@ public class AdminMenu {
         boolean isRunning = true;
         while (isRunning) {
             showVariants();
+            System.out.print("Enter you choice: ");
             String input = bufferedReader.readLine();
             switch (input) {
                 case "1"://Create new client
@@ -53,6 +56,15 @@ public class AdminMenu {
                     break;
                 case "15"://Delete product
                     deleteProduct();
+                    break;
+                case "21"://Show all orders
+                    orderService.readAll();
+                    break;
+                case "22"://Update order status
+                    updateOrderStatus();
+                    break;
+                case "23"://Delete order
+                    deleteOrder();
                     break;
 
                 case "9":
@@ -88,6 +100,10 @@ public class AdminMenu {
         System.out.println("13. Show all products");
         System.out.println("14. Edit product");
         System.out.println("15. Delete product");
+        System.out.println("---Orders-------");
+        System.out.println("21. Show orders");
+        System.out.println("22. Update order status");
+        System.out.println("23. Delete order");
         System.out.println("----------------");
         System.out.println("9. Return");
         System.out.println("0. Exit");
@@ -181,5 +197,21 @@ public class AdminMenu {
 
     private void deleteProduct() throws IOException {
         productService.deleteProduct(getId("Enter id to delete: "));
+    }
+
+    //ORDER MENU METHODS
+    private void updateOrderStatus() throws IOException {
+        productService.readProduct(getId("Enter order id"));
+        System.out.println("Choose new order status:");
+        for (int i = 0; i < OrderStatus.values().length; i++) {
+            System.out.println(i + 1 + ". " + OrderStatus.values()[i]);
+        }
+        System.out.println("You choice: ");
+        int input = Integer.parseInt(bufferedReader.readLine());
+        orderService.updateOrderStatus(input, OrderStatus.values()[input]);
+    }
+
+    private void deleteOrder() throws IOException {
+        orderService.deleteOrder(getId("Enter id to delete"));
     }
 }

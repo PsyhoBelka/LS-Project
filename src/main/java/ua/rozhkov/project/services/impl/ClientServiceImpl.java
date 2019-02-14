@@ -8,13 +8,13 @@ import ua.rozhkov.project.services.ClientService;
 import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
-    private static ClientServiceImpl instance;
+    private static ClientService instance;
     private ClientDAO clientDAO = ClientDAOImpl.getInstance();
 
     public ClientServiceImpl() {
     }
 
-    public static ClientServiceImpl getInstance() {
+    public static ClientService getInstance() {
         if (instance == null) return new ClientServiceImpl();
         else
             return instance;

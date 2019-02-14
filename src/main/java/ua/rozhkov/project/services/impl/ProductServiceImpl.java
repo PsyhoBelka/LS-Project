@@ -9,13 +9,13 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private static ProductServiceImpl instance;
+    private static ProductService instance;
     private final ProductDAO productDAO = new ProductDAOImpl();
 
     public ProductServiceImpl() {
     }
 
-    public static ProductServiceImpl getInstance() {
+    public static ProductService getInstance() {
         if (instance == null) return new ProductServiceImpl();
         else
             return instance;

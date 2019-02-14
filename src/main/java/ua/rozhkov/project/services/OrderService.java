@@ -2,8 +2,10 @@ package ua.rozhkov.project.services;
 
 import ua.rozhkov.project.models.Client;
 import ua.rozhkov.project.models.Order;
+import ua.rozhkov.project.models.OrderStatus;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public interface OrderService {
     /**
@@ -24,6 +26,13 @@ public interface OrderService {
     Order readOrder(long id);
 
     /**
+     * Read all available orders
+     *
+     * @return list of all orders
+     */
+    List<Order> readAll();
+
+    /**
      * Calculate order's total amount
      *
      * @param id order-id to calculate
@@ -33,10 +42,12 @@ public interface OrderService {
 
     /**
      * Update order status
-     * @param idOrder order-id to update status
+     *
+     * @param idOrder   order-id to update status
+     * @param newStatus new order status
      * @return true, if operation successfully
      */
-    boolean updateOrderStatus(long idOrder);
+    boolean updateOrderStatus(long idOrder, OrderStatus newStatus);
 
     /**
      * Delete specified order
