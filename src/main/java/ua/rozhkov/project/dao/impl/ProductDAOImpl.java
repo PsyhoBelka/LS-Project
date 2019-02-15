@@ -6,20 +6,23 @@ import ua.rozhkov.project.models.Product;
 import java.util.List;
 
 public class ProductDAOImpl implements ProductDAO {
-    private static ProductDAOImpl instance;
+    private static volatile ProductDAOImpl instance;
 
     public ProductDAOImpl() {
     }
 
     public static ProductDAOImpl getInstance() {
-        if (instance == null) return new ProductDAOImpl();
-        else
-            return instance;
+        if (instance == null)
+            synchronized (ProductDAOImpl.class) {
+                if (instance == null)
+                    instance = new ProductDAOImpl();
+            }
+        return instance;
     }
 
     @Override
     public long create(Product newEntity) {
-        System.out.println("Product created! "+newEntity);
+        System.out.println("Product created! " + newEntity);
         return 0;
     }
 

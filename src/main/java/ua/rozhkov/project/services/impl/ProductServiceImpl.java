@@ -9,16 +9,19 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private static ProductService instance;
+    private static volatile ProductService instance;
     private final ProductDAO productDAO = new ProductDAOImpl();
 
     public ProductServiceImpl() {
     }
 
     public static ProductService getInstance() {
-        if (instance == null) return new ProductServiceImpl();
-        else
-            return instance;
+        if (instance == null)
+            synchronized (ProductServiceImpl.class) {
+                if (instance == null)
+                    instance = new ProductServiceImpl();
+            }
+        return instance;
     }
 
     @Override
@@ -41,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean updateProduct(long id, String name, BigDecimal price) {
         Product updProduct = readProduct(id);
-        if (!name.equals("")) updProduct.setName(name);
+        if (!name.isEmpty()) updProduct.setName(name);
         if (price.equals(BigDecimal.ZERO)) updProduct.setPrice(price);
         return productDAO.update(id, updProduct);
     }

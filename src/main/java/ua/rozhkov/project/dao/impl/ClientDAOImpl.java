@@ -6,15 +6,18 @@ import ua.rozhkov.project.models.Client;
 import java.util.List;
 
 public class ClientDAOImpl implements ClientDAO {
-    private static ClientDAOImpl instance;
+    private static volatile ClientDAOImpl instance;
 
     public ClientDAOImpl() {
     }
 
     public static ClientDAOImpl getInstance() {
-        if (instance == null) return new ClientDAOImpl();
-        else
-            return instance;
+        if (instance == null)
+            synchronized (ClientDAOImpl.class) {
+                if (instance == null)
+                    instance = new ClientDAOImpl();
+            }
+        return instance;
     }
 
     @Override

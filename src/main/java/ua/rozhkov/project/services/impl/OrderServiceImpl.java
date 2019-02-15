@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
-    private static OrderService instance;
+    private static volatile OrderService instance;
     private final OrderDAO orderDAO = OrderDAOImpl.getInstance();
     private final ProductDAO productDAO = ProductDAOImpl.getInstance();
 
@@ -22,9 +22,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public static OrderService getInstance() {
-        if (instance == null) return new OrderServiceImpl();
-        else
-            return instance;
+        if (instance == null)
+            synchronized (OrderServiceImpl.class) {
+                if (instance == null)
+                    instance = new OrderServiceImpl();
+            }
+        return instance;
     }
 
     @Override
@@ -54,10 +57,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderDAO.get(id);
         if (order == null) {
             System.out.println("Some price...25453465465");
-        }
-        for (Product product : order.getProducts()) {
-            price = price.add(product.getPrice());
-        }
+        } else
+            for (Product product : order.getProducts()) {
+                price = price.add(product.getPrice());
+            }
         return price;
     }
 

@@ -8,16 +8,19 @@ import ua.rozhkov.project.services.ClientService;
 import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
-    private static ClientService instance;
+    private static volatile ClientService instance;
     private ClientDAO clientDAO = ClientDAOImpl.getInstance();
 
     public ClientServiceImpl() {
     }
 
     public static ClientService getInstance() {
-        if (instance == null) return new ClientServiceImpl();
-        else
-            return instance;
+        if (instance == null)
+            synchronized (ClientServiceImpl.class) {
+                if (instance == null)
+                    instance = new ClientServiceImpl();
+            }
+        return instance;
     }
 
     @Override
@@ -39,11 +42,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public boolean updateClient(long idClient, String name, String surname, int age, String phoneNumber, String email) {
         Client updatedClient = readClient(idClient);
-        if (!name.equals("")) updatedClient.setName(name);
-        if (!surname.equals("")) updatedClient.setSurname(surname);
+        if (!name.isEmpty()) updatedClient.setName(name);
+        if (!surname.isEmpty()) updatedClient.setSurname(surname);
         if (age != 0) updatedClient.setAge(age);
-        if (!phoneNumber.equals("")) updatedClient.setPhoneNumber(phoneNumber);
-        if (!email.equals("")) updatedClient.setEmail(email);
+        if (!phoneNumber.isEmpty()) updatedClient.setPhoneNumber(phoneNumber);
+        if (!email.isEmpty()) updatedClient.setEmail(email);
         return clientDAO.update(idClient, updatedClient);
     }
 

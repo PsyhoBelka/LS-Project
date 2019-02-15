@@ -6,15 +6,18 @@ import ua.rozhkov.project.models.Order;
 import java.util.List;
 
 public class OrderDAOImpl implements OrderDAO {
-    private static OrderDAOImpl instance;
+    private static volatile OrderDAOImpl instance;
 
     public OrderDAOImpl() {
     }
 
     public static OrderDAOImpl getInstance() {
-        if (instance == null) return new OrderDAOImpl();
-        else
-            return instance;
+        if (instance == null)
+            synchronized (OrderDAOImpl.class) {
+                if (instance == null)
+                    instance = new OrderDAOImpl();
+            }
+        return instance;
     }
 
     @Override
