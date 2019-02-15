@@ -1,6 +1,7 @@
 package ua.rozhkov.project.views;
 
 import ua.rozhkov.project.models.OrderStatus;
+import ua.rozhkov.project.models.Product;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
@@ -49,7 +50,7 @@ public class AdminMenu {
                     showProductInfo();
                     break;
                 case "13"://Show all products
-                    productService.readAllProducts();
+                    showAllProducts();
                     break;
                 case "14"://Edit product
                     editProduct();
@@ -141,7 +142,7 @@ public class AdminMenu {
     private void editClient() throws IOException {
         long idClient = getId("Enter client id to edit: ");
 
-        System.out.println("Enter new data, leave blank to not change");
+        System.out.print("Enter new data, leave blank to not change");
 
         System.out.print("Enter new name: ");
         String clientName = bufferedReader.readLine();
@@ -168,10 +169,10 @@ public class AdminMenu {
 
     //PRODUCT MENU METHODS
     private void createProduct() throws IOException {
-        System.out.println("Enter name: ");
+        System.out.print("Enter name: ");
         String nameProduct = bufferedReader.readLine();
 
-        System.out.println("Enter price: ");
+        System.out.print("Enter price: ");
         BigDecimal priceProduct = new BigDecimal(bufferedReader.readLine());
 
         productService.createProduct(nameProduct, priceProduct);
@@ -181,15 +182,22 @@ public class AdminMenu {
         productService.readProduct(getId("Enter product id to view: "));
     }
 
+    private void showAllProducts() {
+        for (Product product : productService.readAllProducts()) {
+            System.out.println(product);
+        }
+        System.out.println();
+    }
+
     private void editProduct() throws IOException {
         long idProduct = getId("Enter product id to edit: ");
 
-        System.out.println("Enter new data, leave blank to not change");
+        System.out.print("Enter new data, leave blank to not change");
 
-        System.out.println("Enter new name: ");
+        System.out.print("Enter new name: ");
         String nameProduct = bufferedReader.readLine();
 
-        System.out.println("Enter new price: ");
+        System.out.print("Enter new price: ");
         BigDecimal priceProduct = new BigDecimal(bufferedReader.readLine());
 
         productService.updateProduct(idProduct, nameProduct, priceProduct);

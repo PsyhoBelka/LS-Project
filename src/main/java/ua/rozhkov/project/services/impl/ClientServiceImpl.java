@@ -11,6 +11,7 @@ public class ClientServiceImpl implements ClientService {
     private static volatile ClientService instance;
     private ClientDAO clientDAO = ClientDAOImpl.getInstance();
 
+    //TODO: use custom BusinessException
     private ClientServiceImpl() {
     }
 

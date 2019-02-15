@@ -10,10 +10,12 @@ public class MainMenu {
     private final AdminMenu adminMenu = new AdminMenu();
     private final ClientMenu clientMenu = new ClientMenu();
 
+    //TODO: DI+IoC
+
     public void show() throws IOException {
         boolean isRunning = true;
-
         while (isRunning) {
+
             showVariants();
             System.out.print("Your choice: ");
             String input = bufferedReader.readLine();
