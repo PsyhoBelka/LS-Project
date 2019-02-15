@@ -8,7 +8,7 @@ import java.util.List;
 public class ClientDAOImpl implements ClientDAO {
     private static volatile ClientDAOImpl instance;
 
-    public ClientDAOImpl() {
+    private ClientDAOImpl() {
     }
 
     public static ClientDAOImpl getInstance() {

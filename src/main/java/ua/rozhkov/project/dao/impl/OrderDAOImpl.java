@@ -8,7 +8,7 @@ import java.util.List;
 public class OrderDAOImpl implements OrderDAO {
     private static volatile OrderDAOImpl instance;
 
-    public OrderDAOImpl() {
+    private OrderDAOImpl() {
     }
 
     public static OrderDAOImpl getInstance() {

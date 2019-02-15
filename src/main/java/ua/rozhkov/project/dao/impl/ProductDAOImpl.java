@@ -8,7 +8,7 @@ import java.util.List;
 public class ProductDAOImpl implements ProductDAO {
     private static volatile ProductDAOImpl instance;
 
-    public ProductDAOImpl() {
+    private ProductDAOImpl() {
     }
 
     public static ProductDAOImpl getInstance() {

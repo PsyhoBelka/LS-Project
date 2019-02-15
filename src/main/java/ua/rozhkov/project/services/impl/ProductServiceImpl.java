@@ -10,9 +10,9 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
     private static volatile ProductService instance;
-    private final ProductDAO productDAO = new ProductDAOImpl();
+    private final ProductDAO productDAO = ProductDAOImpl.getInstance();
 
-    public ProductServiceImpl() {
+    private ProductServiceImpl() {
     }
 
     public static ProductService getInstance() {

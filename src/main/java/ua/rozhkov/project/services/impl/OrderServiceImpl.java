@@ -18,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderDAO orderDAO = OrderDAOImpl.getInstance();
     private final ProductDAO productDAO = ProductDAOImpl.getInstance();
 
-    public OrderServiceImpl() {
+    private OrderServiceImpl() {
     }
 
     public static OrderService getInstance() {

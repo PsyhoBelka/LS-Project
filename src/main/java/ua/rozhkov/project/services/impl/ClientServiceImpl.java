@@ -11,7 +11,7 @@ public class ClientServiceImpl implements ClientService {
     private static volatile ClientService instance;
     private ClientDAO clientDAO = ClientDAOImpl.getInstance();
 
-    public ClientServiceImpl() {
+    private ClientServiceImpl() {
     }
 
     public static ClientService getInstance() {
