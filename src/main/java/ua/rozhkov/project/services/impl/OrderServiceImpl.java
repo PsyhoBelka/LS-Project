@@ -36,14 +36,12 @@ public class OrderServiceImpl implements OrderService {
         for (long idProduct : idsProducts) {
             orderToCreate.getProducts().add(productDAO.get(idProduct));
         }
-        orderDAO.create(orderToCreate);
-        return 0;
+        return orderDAO.create(orderToCreate);
     }
 
     @Override
     public Order readOrder(long id) {
-        orderDAO.get(id);
-        return null;
+        return orderDAO.get(id);
     }
 
     @Override
