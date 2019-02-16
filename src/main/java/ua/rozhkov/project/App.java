@@ -3,6 +3,7 @@ package ua.rozhkov.project;
 import ua.rozhkov.project.dao.impl.ClientDAOImpl;
 import ua.rozhkov.project.dao.impl.OrderDAOImpl;
 import ua.rozhkov.project.dao.impl.ProductDAOImpl;
+import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class App {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, BusinessException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         ValidationService validationService = ValidationServiceImpl.getInstance();

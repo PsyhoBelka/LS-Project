@@ -1,5 +1,7 @@
 package ua.rozhkov.project.views;
 
+import ua.rozhkov.project.exceptions.BusinessException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 
@@ -15,7 +17,7 @@ public class MainMenu {
         this.clientMenu = clientMenu;
     }
 
-    public void show() throws IOException {
+    public void show() throws IOException, BusinessException {
         boolean isRunning = true;
         while (isRunning) {
 
