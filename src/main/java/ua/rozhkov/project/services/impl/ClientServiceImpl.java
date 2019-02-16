@@ -1,7 +1,6 @@
 package ua.rozhkov.project.services.impl;
 
 import ua.rozhkov.project.dao.ClientDAO;
-import ua.rozhkov.project.dao.impl.ClientDAOImpl;
 import ua.rozhkov.project.models.Client;
 import ua.rozhkov.project.services.ClientService;
 
@@ -9,10 +8,14 @@ import java.util.List;
 
 public class ClientServiceImpl implements ClientService {
     private static volatile ClientService instance;
-    private ClientDAO clientDAO = ClientDAOImpl.getInstance();
+    private ClientDAO clientDAO;
 
     //TODO: use custom BusinessException
     private ClientServiceImpl() {
+    }
+
+    public void setClientDAO(ClientDAO clientDAO) {
+        this.clientDAO = clientDAO;
     }
 
     public static ClientService getInstance() {

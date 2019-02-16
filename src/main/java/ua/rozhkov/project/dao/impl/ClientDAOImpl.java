@@ -9,7 +9,7 @@ import java.util.List;
 public class ClientDAOImpl implements ClientDAO {
     private static volatile ClientDAOImpl instance;
 
-    private static List<Client> clientsT = new ArrayList<Client>();
+    private static List<Client> clientsT = new ArrayList<>();
     private static long index = 0;
 
     private ClientDAOImpl() {
@@ -27,7 +27,7 @@ public class ClientDAOImpl implements ClientDAO {
     @Override
     public long create(Client newEntity) {
 //        System.out.println("Client created! " + newEntity);
-        newEntity.setId(getId());
+        newEntity.setId(index++);
         clientsT.add(newEntity);
         return newEntity.getId();
     }
@@ -35,14 +35,10 @@ public class ClientDAOImpl implements ClientDAO {
     @Override
     public Client get(long idEntity) {
 //        System.out.println("Some client info");
-        Client tmp = null;
         for (Client client : clientsT) {
-            if (client.getId() == idEntity) {
-                tmp = client;
-                break;
-            }
+            if (client.getId() == idEntity) return client;
         }
-        return tmp;
+        return null;
     }
 
     @Override
@@ -50,7 +46,6 @@ public class ClientDAOImpl implements ClientDAO {
 //        System.out.println("client info 1");
 //        System.out.println("client info 2");
 //        System.out.println("client info 3");
-
         return clientsT;
     }
 
@@ -62,17 +57,18 @@ public class ClientDAOImpl implements ClientDAO {
             updatedEntity.setId(tmp.getId());
             tmp = updatedEntity;
             return true;
-        } else return true;
+        }
+        return false;
     }
 
     @Override
     public boolean delete(long idEntity) {
-        System.out.println("Client deleted!");
-        return true;
-    }
-
-    //temporary methods for emulating non-existed database
-    private long getId() {
-        return index++;
+//        System.out.println("Client deleted!");
+        Client tmp = get(idEntity);
+        if (tmp != null) {
+            clientsT.remove(tmp);
+            return true;
+        }
+        return false;
     }
 }

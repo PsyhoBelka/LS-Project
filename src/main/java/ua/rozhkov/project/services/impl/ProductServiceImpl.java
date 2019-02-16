@@ -1,7 +1,6 @@
 package ua.rozhkov.project.services.impl;
 
 import ua.rozhkov.project.dao.ProductDAO;
-import ua.rozhkov.project.dao.impl.ProductDAOImpl;
 import ua.rozhkov.project.models.Product;
 import ua.rozhkov.project.services.ProductService;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
     private static volatile ProductService instance;
-    private final ProductDAO productDAO = ProductDAOImpl.getInstance();
+    private ProductDAO productDAO;
 
     private ProductServiceImpl() {
     }
@@ -22,6 +21,10 @@ public class ProductServiceImpl implements ProductService {
                     instance = new ProductServiceImpl();
             }
         return instance;
+    }
+
+    public void setProductDAO(ProductDAO productDAO) {
+        this.productDAO = productDAO;
     }
 
     @Override

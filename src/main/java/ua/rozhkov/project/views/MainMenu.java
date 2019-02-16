@@ -2,15 +2,18 @@ package ua.rozhkov.project.views;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class MainMenu {
-
-    private final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-    private final AdminMenu adminMenu = new AdminMenu();
-    private final ClientMenu clientMenu = new ClientMenu();
+    private BufferedReader bufferedReader;
+    private AdminMenu adminMenu;
+    private ClientMenu clientMenu;
 
     //TODO: DI+IoC
+    public MainMenu(BufferedReader bufferedReader, AdminMenu adminMenu, ClientMenu clientMenu) {
+        this.bufferedReader = bufferedReader;
+        this.adminMenu = adminMenu;
+        this.clientMenu = clientMenu;
+    }
 
     public void show() throws IOException {
         boolean isRunning = true;
@@ -28,7 +31,7 @@ public class MainMenu {
                     clientMenu.show();
                     break;
 
-                case "0":
+                case "E":
                     isRunning = false;
                     break;
                 default:
@@ -43,6 +46,6 @@ public class MainMenu {
     private void showVariants() {
         System.out.println("1. Admin");
         System.out.println("2. Client");
-        System.out.println("0. Exit");
+        System.out.println("E. Exit");
     }
 }

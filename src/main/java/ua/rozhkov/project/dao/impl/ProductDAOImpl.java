@@ -28,7 +28,7 @@ public class ProductDAOImpl implements ProductDAO {
     public long create(Product newEntity) {
         newEntity.setId(index++);
         productsT.add(newEntity);
-        return index - 1;
+        return newEntity.getId();
     }
 
     @Override
@@ -52,7 +52,6 @@ public class ProductDAOImpl implements ProductDAO {
     public boolean update(long idEntity, Product updatedEntity) {
 //        System.out.println("Product updated!");
         Product tmp = get(idEntity);
-
         if (tmp != null) {
             updatedEntity.setId(tmp.getId());
             tmp = updatedEntity;

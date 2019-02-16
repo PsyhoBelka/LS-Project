@@ -8,4 +8,14 @@ public class ValidationServiceImpl implements ValidationService {
     public void validateAge(int age) throws BusinessException {
         if ((age < 0) || (age > 120)) throw new BusinessException("Incorrect age!!!");
     }
+
+    @Override
+    public void validateEmail(String email) throws BusinessException {
+
+    }
+
+    @Override
+    public void validatePhoneNum(String phoneNum) throws BusinessException {
+
+    }
 }

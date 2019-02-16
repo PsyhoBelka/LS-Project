@@ -3,17 +3,20 @@ package ua.rozhkov.project.views;
 import ua.rozhkov.project.models.Client;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
-import ua.rozhkov.project.services.impl.OrderServiceImpl;
-import ua.rozhkov.project.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class ClientMenu {
-    private final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-    private final ProductService productService = ProductServiceImpl.getInstance();
-    private final OrderService orderService = OrderServiceImpl.getInstance();
+    private BufferedReader bufferedReader;
+    private ProductService productService;
+    private OrderService orderService;
+
+    public ClientMenu(BufferedReader bufferedReader, ProductService productService, OrderService orderService) {
+        this.bufferedReader = bufferedReader;
+        this.productService = productService;
+        this.orderService = orderService;
+    }
 
     public void show() throws IOException {
         boolean isRunning = true;

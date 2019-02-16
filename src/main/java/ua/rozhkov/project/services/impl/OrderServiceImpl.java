@@ -2,8 +2,6 @@ package ua.rozhkov.project.services.impl;
 
 import ua.rozhkov.project.dao.OrderDAO;
 import ua.rozhkov.project.dao.ProductDAO;
-import ua.rozhkov.project.dao.impl.OrderDAOImpl;
-import ua.rozhkov.project.dao.impl.ProductDAOImpl;
 import ua.rozhkov.project.models.Client;
 import ua.rozhkov.project.models.Order;
 import ua.rozhkov.project.models.OrderStatus;
@@ -15,10 +13,18 @@ import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
     private static volatile OrderService instance;
-    private final OrderDAO orderDAO = OrderDAOImpl.getInstance();
-    private final ProductDAO productDAO = ProductDAOImpl.getInstance();
+    private OrderDAO orderDAO;
+    private ProductDAO productDAO;
 
     private OrderServiceImpl() {
+    }
+
+    public void setOrderDAO(OrderDAO orderDAO) {
+        this.orderDAO = orderDAO;
+    }
+
+    public void setProductDAO(ProductDAO productDAO) {
+        this.productDAO = productDAO;
     }
 
     public static OrderService getInstance() {

@@ -5,21 +5,29 @@ import ua.rozhkov.project.models.Product;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
-import ua.rozhkov.project.services.impl.ClientServiceImpl;
-import ua.rozhkov.project.services.impl.OrderServiceImpl;
-import ua.rozhkov.project.services.impl.ProductServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 
 public class AdminMenu {
-    private final BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+    private BufferedReader bufferedReader;
+    private ClientService clientService;
+    private ProductService productService;
+    private OrderService orderService;
 
-    private final ClientService clientService = ClientServiceImpl.getInstance();
-    private final ProductService productService = ProductServiceImpl.getInstance();
-    private final OrderService orderService = OrderServiceImpl.getInstance();
+    public AdminMenu(BufferedReader bufferedReader, ClientService clientService, ProductService productService, OrderService orderService) {
+        this.bufferedReader = bufferedReader;
+        this.clientService = clientService;
+        this.productService = productService;
+        this.orderService = orderService;
+    }
+
+    public AdminMenu(ClientService clientService, ProductService productService, OrderService orderService) {
+        this.clientService = clientService;
+        this.productService = productService;
+        this.orderService = orderService;
+    }
 
     public void show() throws IOException {
         boolean isRunning = true;
