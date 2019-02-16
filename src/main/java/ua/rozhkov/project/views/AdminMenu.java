@@ -1,10 +1,12 @@
 package ua.rozhkov.project.views;
 
+import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.models.OrderStatus;
 import ua.rozhkov.project.models.Product;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
+import ua.rozhkov.project.validators.ValidationService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,20 +18,14 @@ public class AdminMenu {
     private ProductService productService;
     private OrderService orderService;
 
-    public AdminMenu(BufferedReader bufferedReader, ClientService clientService, ProductService productService, OrderService orderService) {
+    public AdminMenu(BufferedReader bufferedReader, ClientService clientService, ProductService productService, OrderService orderService, ValidationService validationService) {
         this.bufferedReader = bufferedReader;
         this.clientService = clientService;
         this.productService = productService;
         this.orderService = orderService;
     }
 
-    public AdminMenu(ClientService clientService, ProductService productService, OrderService orderService) {
-        this.clientService = clientService;
-        this.productService = productService;
-        this.orderService = orderService;
-    }
-
-    public void show() throws IOException {
+    public void show() throws IOException, BusinessException {
         boolean isRunning = true;
         while (isRunning) {
             showVariants();
@@ -76,10 +72,10 @@ public class AdminMenu {
                     deleteOrder();
                     break;
 
-                case "9":
+                case "R":
                     isRunning = false;
                     break;
-                case "0":
+                case "E":
                     System.exit(0);
                     break;
                 default:
@@ -89,12 +85,8 @@ public class AdminMenu {
     }
 
     private void showVariants() {
-        /*CRUD
-         * Create
-         * Read
-         * Read all
-         * Update
-         * Delete
+        /*CRUD Product+Client
+         * RUD Order
          * */
         System.out.println("---Admin menu---");
         System.out.println("---Clients------");
@@ -114,8 +106,8 @@ public class AdminMenu {
         System.out.println("22. Update order status");
         System.out.println("23. Delete order");
         System.out.println("----------------");
-        System.out.println("9. Return");
-        System.out.println("0. Exit");
+        System.out.println("R Return");
+        System.out.println("E Exit");
         System.out.println("----------------");
     }
 
@@ -125,15 +117,16 @@ public class AdminMenu {
     }
 
     //CLIENT MENU METHODS
-    private void createClient() throws IOException {
+    private void createClient() throws IOException, BusinessException {
         System.out.print("Enter name: ");
         String clientName = bufferedReader.readLine();
 
         System.out.print("Enter surname: ");
         String clientSurname = bufferedReader.readLine();
 
+        int clientAge = 0;
         System.out.print("Enter age: ");
-        int clientAge = Integer.parseInt(bufferedReader.readLine());
+        clientAge = validateInputAge(bufferedReader.readLine());
 
         System.out.print("Enter phone number: ");
         String clientPhoneNumber = bufferedReader.readLine();
@@ -229,5 +222,16 @@ public class AdminMenu {
 
     private void deleteOrder() throws IOException {
         orderService.deleteOrder(getId("Enter id to delete"));
+    }
+
+    //Special methods
+    private int validateInputAge(String input) throws IOException {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException ex) {
+            System.out.println("Wrong age!!!");
+            System.out.print("Try again: ");
+            return validateInputAge(bufferedReader.readLine());
+        }
     }
 }

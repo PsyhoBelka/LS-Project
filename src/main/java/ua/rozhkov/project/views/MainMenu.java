@@ -38,7 +38,6 @@ public class MainMenu {
                     System.out.println("Wrong input!!!");
                     break;
             }
-
             System.out.println();
         }
     }

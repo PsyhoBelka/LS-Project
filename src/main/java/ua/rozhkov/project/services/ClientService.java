@@ -1,5 +1,6 @@
 package ua.rozhkov.project.services;
 
+import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.models.Client;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface ClientService {
      * @param email       client's email
      * @return id of newly created client
      */
-    long createClient(String name, String surname, int age, String phoneNumber, String email);
+    long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException;
 
     /**
      * Show client's info
