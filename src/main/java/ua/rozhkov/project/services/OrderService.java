@@ -11,11 +11,11 @@ public interface OrderService {
     /**
      * Create new order for specified client
      *
-     * @param client      client, who ordering
+     * @param currClient  client, who ordering
      * @param idsProducts products-id to create order
      * @return id of newly created order
      */
-    long createOrder(Client client, long[] idsProducts);
+    long createOrder(Client currClient, long[] idsProducts);
 
     /**
      * Read order by id

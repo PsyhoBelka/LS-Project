@@ -38,7 +38,7 @@ public class App {
         ((OrderServiceImpl) orderService).setProductDAO(ProductDAOImpl.getInstance());
 
         AdminMenu adminMenu = new AdminMenu(bufferedReader, clientService, productService, orderService, validationService);
-        ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService);
+        ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService, validationService, clientService);
 
         MainMenu mainMenu = new MainMenu(bufferedReader, adminMenu, clientMenu);
         mainMenu.show();

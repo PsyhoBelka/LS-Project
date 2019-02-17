@@ -38,16 +38,22 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public long createOrder(Client client, long[] idsProducts) {
-        Order orderToCreate = new Order(client);
-        for (long idProduct : idsProducts) {
-            orderToCreate.getProducts().add(productDAO.get(idProduct));
+        if (client != null) {
+            Order orderToCreate = new Order(client);
+            for (long idProduct : idsProducts) {
+                orderToCreate.getProducts().add(productDAO.get(idProduct));
+            }
+            return orderDAO.create(orderToCreate);
         }
-        return orderDAO.create(orderToCreate);
+        return -1;
     }
 
     @Override
-    public Order readOrder(long id) {
-        return orderDAO.get(id);
+    public Order readOrder(long idOrder) {
+        if (idOrder >= 0)
+            return orderDAO.get(idOrder);
+        else
+            return null;
     }
 
     @Override
@@ -56,27 +62,33 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public BigDecimal calculateOrder(long id) {
-        BigDecimal price = BigDecimal.ZERO;
-        Order order = orderDAO.get(id);
-        if (order == null) {
-            System.out.println("Some price...25453465465");
-        } else
+    public BigDecimal calculateOrder(long idOrder) {
+        if (idOrder >= 0) {
+            BigDecimal price = BigDecimal.ZERO;
+            Order order = orderDAO.get(idOrder);
             for (Product product : order.getProducts()) {
                 price = price.add(product.getPrice());
             }
-        return price;
+            return price;
+        }
+        return BigDecimal.valueOf(-1);
     }
 
     @Override
     public boolean updateOrderStatus(long idOrder, OrderStatus newStatus) {
-        Order order = orderDAO.get(idOrder);
-        order.setOrderStatus(newStatus);
-        return orderDAO.update(idOrder, order);
+        if (idOrder >= 0) {
+            Order order = orderDAO.get(idOrder);
+            order.setOrderStatus(newStatus);
+            return orderDAO.update(idOrder, order);
+        }
+        return false;
     }
 
     @Override
-    public boolean deleteOrder(long id) {
-        return orderDAO.delete(id);
+    public boolean deleteOrder(long idOrder) {
+        if (idOrder >= 0) {
+            return orderDAO.delete(idOrder);
+        }
+        return false;
     }
 }

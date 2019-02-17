@@ -1,6 +1,7 @@
 package ua.rozhkov.project.services.impl;
 
 import ua.rozhkov.project.dao.ClientDAO;
+import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.models.Client;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.validators.ValidationService;
@@ -13,10 +14,7 @@ public class ClientServiceImpl implements ClientService {
     private ClientDAO clientDAO;
     private ValidationService validationService;
 
-    //TODO: use custom BusinessException
-
-
-    public ClientServiceImpl() {
+    private ClientServiceImpl() {
     }
 
     public static void setInstance(ClientService instance) {
@@ -41,15 +39,20 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public long createClient(String name, String surname, int age, String phoneNumber, String email) {
-
-        Client newClient = new Client(name, surname, age, phoneNumber, email);
-        return clientDAO.create(newClient);
+    public long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException {
+        if (validationService.validateEmail(email) &&
+                validationService.validatePhoneNum(phoneNumber) &&
+                validationService.validateAge(age)) {
+            return new Client(name, surname, age, phoneNumber, email).getId();
+        }
+        return -1;
     }
 
     @Override
     public Client readClient(long idClient) {
-        return clientDAO.get(idClient);
+        if (idClient >= 0)
+            return clientDAO.get(idClient);
+        return null;
     }
 
     @Override
@@ -59,18 +62,46 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean updateClient(long idClient, String name, String surname, int age, String phoneNumber, String email) {
-        Client updatedClient = readClient(idClient);
-        if (!name.isEmpty()) updatedClient.setName(name);
-        if (!surname.isEmpty()) updatedClient.setSurname(surname);
-        if (age != 0) updatedClient.setAge(age);
-        if (!phoneNumber.isEmpty()) updatedClient.setPhoneNumber(phoneNumber);
-        if (!email.isEmpty()) updatedClient.setEmail(email);
-        return clientDAO.update(idClient, updatedClient);
+        if (idClient >= 0) {
+            Client updatedClient = readClient(idClient);
+            if (!name.isEmpty())
+                updatedClient.setName(name);
+            if (!surname.isEmpty())
+                updatedClient.setSurname(surname);
+            try {
+                if (age != 0 && validationService.validateAge(age))
+                    updatedClient.setAge(age);
+            } catch (BusinessException e) {
+                e.printStackTrace();
+                System.out.println("Wrong age!");
+                return false;
+            }
+            try {
+                if (!phoneNumber.isEmpty() && validationService.validatePhoneNum(phoneNumber))
+                    updatedClient.setPhoneNumber(phoneNumber);
+            } catch (BusinessException e) {
+                e.printStackTrace();
+                System.out.println("Wrong phone number!");
+                return false;
+            }
+            try {
+                if (!email.isEmpty() && validationService.validateEmail(email))
+                    updatedClient.setEmail(email);
+            } catch (BusinessException e) {
+                e.printStackTrace();
+                System.out.println("Wrong email!");
+                return false;
+            }
+            return clientDAO.update(idClient, updatedClient);
+        }
+        return false;
     }
 
     @Override
     public boolean deleteClient(long idClient) {
-        return clientDAO.delete(idClient);
+        if (idClient >= 0)
+            return clientDAO.delete(idClient);
+        return false;
     }
 
 }
