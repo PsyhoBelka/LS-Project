@@ -196,13 +196,20 @@ public class AdminMenu {
         String nameProduct = bufferedReader.readLine();
 
         System.out.print("Enter price: ");
-        BigDecimal priceProduct = new BigDecimal(bufferedReader.readLine());
+        BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
         productService.createProduct(nameProduct, priceProduct);
     }
 
     private void showProductInfo() throws IOException {
-        productService.readProduct(getId("Enter product id to view: "));
+        long idProduct = getId("Enter product id to view: ");
+
+        if (checkProductExist(idProduct)) {
+            System.out.println(productService.readProduct(idProduct));
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
     }
 
     private void showAllProducts() {
@@ -214,44 +221,80 @@ public class AdminMenu {
 
     private void editProduct() throws IOException {
         long idProduct = getId("Enter product id to edit: ");
-        if (checkExistProduct(idProduct)) {
+
+        if (checkProductExist(idProduct)) {
             System.out.print("Enter new data, leave blank to not change");
 
             System.out.print("Enter new name: ");
             String nameProduct = bufferedReader.readLine();
 
             System.out.print("Enter new price: ");
-            BigDecimal priceProduct = new BigDecimal(bufferedReader.readLine());
+            BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
             if (productService.updateProduct(idProduct, nameProduct, priceProduct)) {
-                System.out.println("Product updated!");
+                System.out.println("Product updated! " + productService.readProduct(idProduct));
             }
-        }
+        } else
+            System.out.println("Wrong id!");
+
         System.out.println();
     }
 
     private void deleteProduct() throws IOException {
-        productService.deleteProduct(getId("Enter id to delete: "));
+        long idProduct = getId("Enter id to delete: ");
+
+        if (checkProductExist(idProduct)) {
+            if (productService.deleteProduct(idProduct)) {
+                System.out.println("Deleted successfully!");
+            }
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
     }
 
-    private boolean checkExistProduct(long idProduct) {
+    private boolean checkProductExist(long idProduct) {
         return ((idProduct >= 0) && (productService.readProduct(idProduct) != null));
     }
 
     //ORDER MENU METHODS
     private void updateOrderStatus() throws IOException {
-        productService.readProduct(getId("Enter order id"));
-        System.out.println("Choose new order status:");
+        long idOrder = getId("Enter order id: ");
+
+        if (checkOrderExist(idOrder)) {
+            System.out.println("Choose new order status:");
+            int statusNum = selectOrderStatus();
+            orderService.updateOrderStatus(statusNum, OrderStatus.values()[statusNum]);
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
+    }
+
+    private void deleteOrder() throws IOException {
+        long idOrder = getId("Enter id to delete: ");
+
+        if (checkOrderExist(idOrder)) {
+            orderService.deleteOrder(idOrder);
+            System.out.println("Order deleted!");
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
+    }
+
+    private int selectOrderStatus() throws IOException {
         for (int i = 0; i < OrderStatus.values().length; i++) {
             System.out.println(i + 1 + ". " + OrderStatus.values()[i]);
         }
         System.out.println("You choice: ");
-        int input = Integer.parseInt(bufferedReader.readLine());
-        orderService.updateOrderStatus(input, OrderStatus.values()[input]);
-    }
-
-    private void deleteOrder() throws IOException {
-        orderService.deleteOrder(getId("Enter id to delete"));
+        try {
+            return Integer.parseInt(bufferedReader.readLine());
+        } catch (NumberFormatException ex) {
+            System.out.println("Wrong input!!!");
+            System.out.print("Try again: ");
+            return selectOrderStatus();
+        }
     }
 
     //Special methods
@@ -264,4 +307,19 @@ public class AdminMenu {
             return validateInputAge(bufferedReader.readLine());
         }
     }
+
+    private BigDecimal validateProductPrice(String input) throws IOException {
+        try {
+            return BigDecimal.valueOf(Long.parseLong(input));
+        } catch (NumberFormatException ex) {
+            System.out.println("Wrong price!!!");
+            System.out.println("Try again: ");
+            return validateProductPrice(bufferedReader.readLine());
+        }
+    }
+
+    private boolean checkOrderExist(long idOrder) {
+        return ((idOrder >= 0) && (orderService.readOrder(idOrder) != null));
+    }
+
 }
