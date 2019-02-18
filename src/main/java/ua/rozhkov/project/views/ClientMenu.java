@@ -2,6 +2,7 @@ package ua.rozhkov.project.views;
 
 import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.models.Client;
+import ua.rozhkov.project.models.Order;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
@@ -26,7 +27,7 @@ public class ClientMenu {
         this.clientService = clientService;
     }
 
-    public void show() throws IOException {
+    public void show() throws IOException, BusinessException {
         boolean isRunning = true;
 
         while (isRunning) {
@@ -35,17 +36,22 @@ public class ClientMenu {
             String input = bufferedReader.readLine();
 
             switch (input) {
-                case "1"://Register or sign in
-                    //TODO: register
+                case "1"://1. Register or sign in
+                    currentClient = registerClient();
                     break;
-                case "2"://1. Show products
+                case "2"://2. Show products
                     productService.readAllProducts();
                     break;
-                case "3"://2. Order products
+                case "3"://3. Order products
                     orderProducts(currentClient);
                     break;
-                case "4"://3. Show orders
-                    //TODO: show products
+                case "4"://4. Show orders
+                    showClientOrders(currentClient);
+                    break;
+                case "5"://Logout
+                    currentClient = null;
+                    System.out.println("Successfully logout!");
+                    System.out.println();
                     break;
                 case "R"://Return
                     isRunning = false;
@@ -59,7 +65,7 @@ public class ClientMenu {
         }
     }
 
-    private void orderProducts(Client client) throws IOException {
+    private void orderProducts(Client client) throws IOException, BusinessException {
         if (client == null) {
             currentClient = findClient();
             if (currentClient == null)
@@ -82,28 +88,57 @@ public class ClientMenu {
         System.out.println("Enter you phoneNumber(10 digits): ");
         String input = bufferedReader.readLine();
         try {
-            validationService.validatePhoneNum(input);
-            for (Client client : clientService.readAllClients()) {
-                if (client.getPhoneNumber().equals(input))
-                    return client;
+            if (validationService.validatePhoneNum(input)) {
+                for (Client client : clientService.readAllClients()) {
+                    if (client.getPhoneNumber().equals(input))
+                        return client;
+                }
             }
         } catch (BusinessException ex) {
             ex.printStackTrace();
+            System.out.println("Wrong phone number! You unauthorized!");
+            return null;
         }
-        System.out.println("Wrong phone number! You unauthorized!");
         return null;
     }
 
-    private Client registerClient() {
-        //TODO: do method
+    private Client registerClient() throws IOException, BusinessException {
+        System.out.println("You are not register yet? Register now to order!");
+        System.out.print("Enter name: ");
+        String clientName = bufferedReader.readLine();
+
+        System.out.print("Enter surname: ");
+        String clientSurname = bufferedReader.readLine();
+
+        System.out.print("Enter phone number: ");
+        String clientPhoneNumber = bufferedReader.readLine();
+
+        long res = clientService.createClient(clientName, clientSurname, clientPhoneNumber);
+        if (res >= 0) {
+            System.out.println("Client created: " + clientService.readClient(res));
+            return clientService.readClient(res);
+        }
+        System.out.println();
+        return null;
     }
 
+    private void showClientOrders(Client client) {
+        if (client != null) {
+            for (Order order : orderService.readAll()) {
+                if (order.getClient().equals(client))
+                    System.out.println(order);
+            }
+        } else
+            System.out.println("No orders yet!");
+        System.out.println();
+    }
 
     private void showVariants() {
         System.out.println("1. Register or sign in");
         System.out.println("2. Show products");
         System.out.println("3. Order products");
         System.out.println("4. Show orders");
+        System.out.println("5. Logout");
         System.out.println("-------------");
         System.out.println("R. Return");
         System.out.println("E. Exit");

@@ -17,6 +17,12 @@ public class Client {
         this.email = email;
     }
 
+    public Client(String name, String surname, String phoneNumber) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+    }
+
     @Override
     public String toString() {
         return "Client{" +

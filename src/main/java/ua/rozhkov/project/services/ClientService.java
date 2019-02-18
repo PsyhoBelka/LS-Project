@@ -19,6 +19,16 @@ public interface ClientService {
     long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException;
 
     /**
+     * Simplified form of client creation for client self-registering
+     *
+     * @param clientName        client name
+     * @param clientSurname     client surname
+     * @param clientPhoneNumber client phone number
+     * @return id of newly created client
+     */
+    long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException;
+
+    /**
      * Show client's info
      *
      * @param idClient id client for show
@@ -53,5 +63,4 @@ public interface ClientService {
      * @return true, if operation successfully
      */
     boolean deleteClient(long idClient);
-
 }

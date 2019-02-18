@@ -49,6 +49,13 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException {
+        if (validationService.validatePhoneNum(clientPhoneNumber))
+            return new Client(clientName, clientSurname, clientPhoneNumber).getId();
+        return -1;
+    }
+
+    @Override
     public Client readClient(long idClient) {
         if (idClient >= 0)
             return clientDAO.get(idClient);
