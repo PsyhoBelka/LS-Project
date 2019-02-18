@@ -43,6 +43,10 @@ public class ClientServiceImpl implements ClientService {
         if (validationService.validateEmail(email) &&
                 validationService.validatePhoneNum(phoneNumber) &&
                 validationService.validateAge(age)) {
+            for (Client client : readAllClients()) {
+                if (client.getPhoneNumber().equals(phoneNumber))
+                    throw new BusinessException("Duplicate phone number");
+            }
             return new Client(name, surname, age, phoneNumber, email).getId();
         }
         return -1;
@@ -50,8 +54,13 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException {
-        if (validationService.validatePhoneNum(clientPhoneNumber))
+        if (validationService.validatePhoneNum(clientPhoneNumber)) {
+            for (Client client : readAllClients()) {
+                if (client.getPhoneNumber().equals(clientPhoneNumber))
+                    throw new BusinessException("Duplicate phone number");
+            }
             return new Client(clientName, clientSurname, clientPhoneNumber).getId();
+        }
         return -1;
     }
 

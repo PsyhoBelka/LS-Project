@@ -22,6 +22,8 @@ import java.io.InputStreamReader;
 
 public class App {
     public static void main(String[] args) throws IOException, BusinessException {
+        if (true)
+            throw new BusinessException("1243134");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
         ValidationService validationService = ValidationServiceImpl.getInstance();
