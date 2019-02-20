@@ -1,10 +1,13 @@
 package ua.rozhkov.project.views;
 
+import ua.rozhkov.project.exceptions.BusinessException;
+import ua.rozhkov.project.models.Client;
 import ua.rozhkov.project.models.OrderStatus;
 import ua.rozhkov.project.models.Product;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
+import ua.rozhkov.project.validators.ValidationService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,20 +19,14 @@ public class AdminMenu {
     private ProductService productService;
     private OrderService orderService;
 
-    public AdminMenu(BufferedReader bufferedReader, ClientService clientService, ProductService productService, OrderService orderService) {
+    public AdminMenu(BufferedReader bufferedReader, ClientService clientService, ProductService productService, OrderService orderService, ValidationService validationService) {
         this.bufferedReader = bufferedReader;
         this.clientService = clientService;
         this.productService = productService;
         this.orderService = orderService;
     }
 
-    public AdminMenu(ClientService clientService, ProductService productService, OrderService orderService) {
-        this.clientService = clientService;
-        this.productService = productService;
-        this.orderService = orderService;
-    }
-
-    public void show() throws IOException {
+    public void show() throws IOException, BusinessException {
         boolean isRunning = true;
         while (isRunning) {
             showVariants();
@@ -43,7 +40,11 @@ public class AdminMenu {
                     showClientInfo();
                     break;
                 case "3"://Show all clients
-                    clientService.readAllClients();
+                    System.out.println("Registered clients:");
+                    for (Client client : clientService.readAllClients()) {
+                        System.out.println(client);
+                    }
+                    System.out.println();
                     break;
                 case "4"://Edit client
                     editClient();
@@ -76,10 +77,10 @@ public class AdminMenu {
                     deleteOrder();
                     break;
 
-                case "9":
+                case "R":
                     isRunning = false;
                     break;
-                case "0":
+                case "E":
                     System.exit(0);
                     break;
                 default:
@@ -89,12 +90,8 @@ public class AdminMenu {
     }
 
     private void showVariants() {
-        /*CRUD
-         * Create
-         * Read
-         * Read all
-         * Update
-         * Delete
+        /*CRUD Product+Client
+         * RUD Order
          * */
         System.out.println("---Admin menu---");
         System.out.println("---Clients------");
@@ -114,8 +111,8 @@ public class AdminMenu {
         System.out.println("22. Update order status");
         System.out.println("23. Delete order");
         System.out.println("----------------");
-        System.out.println("9. Return");
-        System.out.println("0. Exit");
+        System.out.println("R Return");
+        System.out.println("E Exit");
         System.out.println("----------------");
     }
 
@@ -125,54 +122,72 @@ public class AdminMenu {
     }
 
     //CLIENT MENU METHODS
-    private void createClient() throws IOException {
+    private void createClient() throws IOException, BusinessException {
         System.out.print("Enter name: ");
         String clientName = bufferedReader.readLine();
 
         System.out.print("Enter surname: ");
         String clientSurname = bufferedReader.readLine();
 
+        int clientAge = 0;
         System.out.print("Enter age: ");
-        int clientAge = Integer.parseInt(bufferedReader.readLine());
+        clientAge = validateInputAge(bufferedReader.readLine());
 
         System.out.print("Enter phone number: ");
         String clientPhoneNumber = bufferedReader.readLine();
 
         System.out.print("Enter email: ");
         String clientEmail = bufferedReader.readLine();
-        clientService.createClient(clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+        long res = clientService.createClient(clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+        if (res >= 0) {
+            System.out.println("Client created: " + clientService.readClient(res));
+        }
+        System.out.println();
     }
 
     private void showClientInfo() throws IOException {
-        clientService.readClient(getId("Enter client id to view: "));
+        System.out.println(clientService.readClient(getId("Enter client id to view: ")));
+        System.out.println();
     }
 
     private void editClient() throws IOException {
         long idClient = getId("Enter client id to edit: ");
 
-        System.out.print("Enter new data, leave blank to not change");
+        if (checkClientExist(idClient)) {
+            System.out.print("Enter new data, leave blank to not change");
 
-        System.out.print("Enter new name: ");
-        String clientName = bufferedReader.readLine();
+            System.out.print("Enter new name: ");
+            String clientName = bufferedReader.readLine();
 
-        System.out.print("Enter surname: ");
-        String clientSurname = bufferedReader.readLine();
+            System.out.print("Enter surname: ");
+            String clientSurname = bufferedReader.readLine();
 
-        System.out.print("Enter new age: ");
-        int clientAge = Integer.parseInt(bufferedReader.readLine());
+            System.out.print("Enter new age: ");
+            int clientAge = Integer.parseInt(bufferedReader.readLine());
 
-        System.out.print("Enter new phone number: ");
-        String clientPhoneNumber = bufferedReader.readLine();
+            System.out.print("Enter new phone number: ");
+            String clientPhoneNumber = bufferedReader.readLine();
 
-        System.out.print("Enter new email: ");
-        String clientEmail = bufferedReader.readLine();
+            System.out.print("Enter new email: ");
+            String clientEmail = bufferedReader.readLine();
 
-        clientService.updateClient(idClient, clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+            clientService.updateClient(idClient, clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+        } else
+            System.out.println("Client not found!");
+        System.out.println();
     }
 
     private void deleteClient() throws IOException {
         long idClient = getId("Enter client id to delete: ");
-        clientService.deleteClient(idClient);
+        if (checkClientExist(idClient)) {
+            clientService.deleteClient(idClient);
+        } else
+            System.out.println("Client not found");
+        System.out.println();
+    }
+
+    private boolean checkClientExist(long idClient) {
+        return (idClient >= 0) && (clientService.readClient(idClient) != null);
     }
 
     //PRODUCT MENU METHODS
@@ -181,13 +196,20 @@ public class AdminMenu {
         String nameProduct = bufferedReader.readLine();
 
         System.out.print("Enter price: ");
-        BigDecimal priceProduct = new BigDecimal(bufferedReader.readLine());
+        BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
         productService.createProduct(nameProduct, priceProduct);
     }
 
     private void showProductInfo() throws IOException {
-        productService.readProduct(getId("Enter product id to view: "));
+        long idProduct = getId("Enter product id to view: ");
+
+        if (checkProductExist(idProduct)) {
+            System.out.println(productService.readProduct(idProduct));
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
     }
 
     private void showAllProducts() {
@@ -200,34 +222,104 @@ public class AdminMenu {
     private void editProduct() throws IOException {
         long idProduct = getId("Enter product id to edit: ");
 
-        System.out.print("Enter new data, leave blank to not change");
+        if (checkProductExist(idProduct)) {
+            System.out.print("Enter new data, leave blank to not change");
 
-        System.out.print("Enter new name: ");
-        String nameProduct = bufferedReader.readLine();
+            System.out.print("Enter new name: ");
+            String nameProduct = bufferedReader.readLine();
 
-        System.out.print("Enter new price: ");
-        BigDecimal priceProduct = new BigDecimal(bufferedReader.readLine());
+            System.out.print("Enter new price: ");
+            BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
-        productService.updateProduct(idProduct, nameProduct, priceProduct);
+            if (productService.updateProduct(idProduct, nameProduct, priceProduct)) {
+                System.out.println("Product updated! " + productService.readProduct(idProduct));
+            }
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
     }
 
     private void deleteProduct() throws IOException {
-        productService.deleteProduct(getId("Enter id to delete: "));
+        long idProduct = getId("Enter id to delete: ");
+
+        if (checkProductExist(idProduct)) {
+            if (productService.deleteProduct(idProduct)) {
+                System.out.println("Deleted successfully!");
+            }
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
+    }
+
+    private boolean checkProductExist(long idProduct) {
+        return ((idProduct >= 0) && (productService.readProduct(idProduct) != null));
     }
 
     //ORDER MENU METHODS
     private void updateOrderStatus() throws IOException {
-        productService.readProduct(getId("Enter order id"));
-        System.out.println("Choose new order status:");
+        long idOrder = getId("Enter order id: ");
+
+        if (checkOrderExist(idOrder)) {
+            System.out.println("Choose new order status:");
+            int statusNum = selectOrderStatus();
+            orderService.updateOrderStatus(statusNum, OrderStatus.values()[statusNum]);
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
+    }
+
+    private void deleteOrder() throws IOException {
+        long idOrder = getId("Enter id to delete: ");
+
+        if (checkOrderExist(idOrder)) {
+            orderService.deleteOrder(idOrder);
+            System.out.println("Order deleted!");
+        } else
+            System.out.println("Wrong id!");
+
+        System.out.println();
+    }
+
+    private int selectOrderStatus() throws IOException {
         for (int i = 0; i < OrderStatus.values().length; i++) {
             System.out.println(i + 1 + ". " + OrderStatus.values()[i]);
         }
         System.out.println("You choice: ");
-        int input = Integer.parseInt(bufferedReader.readLine());
-        orderService.updateOrderStatus(input, OrderStatus.values()[input]);
+        try {
+            return Integer.parseInt(bufferedReader.readLine());
+        } catch (NumberFormatException ex) {
+            System.out.println("Wrong input!!!");
+            System.out.print("Try again: ");
+            return selectOrderStatus();
+        }
     }
 
-    private void deleteOrder() throws IOException {
-        orderService.deleteOrder(getId("Enter id to delete"));
+    //Special methods
+    private int validateInputAge(String input) throws IOException {
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException ex) {
+            System.out.println("Wrong age!!!");
+            System.out.print("Try again: ");
+            return validateInputAge(bufferedReader.readLine());
+        }
     }
+
+    private BigDecimal validateProductPrice(String input) throws IOException {
+        try {
+            return BigDecimal.valueOf(Long.parseLong(input));
+        } catch (NumberFormatException ex) {
+            System.out.println("Wrong price!!!");
+            System.out.println("Try again: ");
+            return validateProductPrice(bufferedReader.readLine());
+        }
+    }
+
+    private boolean checkOrderExist(long idOrder) {
+        return ((idOrder >= 0) && (orderService.readOrder(idOrder) != null));
+    }
+
 }

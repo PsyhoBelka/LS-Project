@@ -1,5 +1,6 @@
 package ua.rozhkov.project.services;
 
+import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.models.Client;
 
 import java.util.List;
@@ -15,7 +16,17 @@ public interface ClientService {
      * @param email       client's email
      * @return id of newly created client
      */
-    long createClient(String name, String surname, int age, String phoneNumber, String email);
+    long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException;
+
+    /**
+     * Simplified form of client creation for client self-registering
+     *
+     * @param clientName        client name
+     * @param clientSurname     client surname
+     * @param clientPhoneNumber client phone number
+     * @return id of newly created client
+     */
+    long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException;
 
     /**
      * Show client's info
@@ -52,5 +63,4 @@ public interface ClientService {
      * @return true, if operation successfully
      */
     boolean deleteClient(long idClient);
-
 }

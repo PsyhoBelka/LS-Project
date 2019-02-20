@@ -34,8 +34,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product readProduct(long id) {
-        productDAO.get(id);
+    public Product readProduct(long idProduct) {
+        if (idProduct >= 0) {
+            return productDAO.get(idProduct);
+        }
         return null;
     }
 
@@ -45,15 +47,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean updateProduct(long id, String name, BigDecimal price) {
-        Product updProduct = readProduct(id);
-        if (!name.isEmpty()) updProduct.setName(name);
-        if (price.equals(BigDecimal.ZERO)) updProduct.setPrice(price);
-        return productDAO.update(id, updProduct);
+    public boolean updateProduct(long idProduct, String name, BigDecimal price) {
+        if (idProduct >= 0) {
+            Product updProduct = readProduct(idProduct);
+            if (!name.isEmpty())
+                updProduct.setName(name);
+            if (price.equals(BigDecimal.ZERO))
+                updProduct.setPrice(price);
+            return productDAO.update(idProduct, updProduct);
+        }
+        return false;
     }
 
     @Override
-    public boolean deleteProduct(long id) {
-        return productDAO.delete(id);
+    public boolean deleteProduct(long idProduct) {
+        if (idProduct >= 0)
+            return productDAO.delete(idProduct);
+        return false;
     }
 }
