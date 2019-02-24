@@ -43,7 +43,7 @@ public class ClientServiceImpl implements ClientService {
         if (validationService.validateEmail(email) &&
                 validationService.validatePhoneNum(phoneNumber) &&
                 validationService.validateAge(age)) {
-            for (Client client : readAllClients()) {
+            for (Client client : getAllClients()) {
                 if (client.getPhoneNumber().equals(phoneNumber))
                     throw new BusinessException("Duplicate phone number");
             }
@@ -55,7 +55,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException {
         if (validationService.validatePhoneNum(clientPhoneNumber)) {
-            for (Client client : readAllClients()) {
+            for (Client client : getAllClients()) {
                 if (client.getPhoneNumber().equals(clientPhoneNumber))
                     throw new BusinessException("Duplicate phone number");
             }
@@ -65,21 +65,21 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client readClient(long idClient) {
+    public Client getClient(long idClient) {
         if (idClient >= 0)
             return clientDAO.get(idClient);
         return null;
     }
 
     @Override
-    public List<Client> readAllClients() {
+    public List<Client> getAllClients() {
         return clientDAO.getAll();
     }
 
     @Override
     public boolean updateClient(long idClient, String name, String surname, int age, String phoneNumber, String email) {
         if (idClient >= 0) {
-            Client updatedClient = readClient(idClient);
+            Client updatedClient = getClient(idClient);
             if (!name.isEmpty())
                 updatedClient.setName(name);
             if (!surname.isEmpty())

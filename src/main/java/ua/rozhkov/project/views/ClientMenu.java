@@ -40,7 +40,7 @@ public class ClientMenu {
                     currentClient = registerClient();
                     break;
                 case "2"://2. Show products
-                    productService.readAllProducts();
+                    productService.getAllProducts();
                     break;
                 case "3"://3. Order products
                     orderProducts(currentClient);
@@ -89,7 +89,7 @@ public class ClientMenu {
         String input = bufferedReader.readLine();
         try {
             if (validationService.validatePhoneNum(input)) {
-                for (Client client : clientService.readAllClients()) {
+                for (Client client : clientService.getAllClients()) {
                     if (client.getPhoneNumber().equals(input))
                         return client;
                 }
@@ -115,8 +115,8 @@ public class ClientMenu {
 
         long res = clientService.createClient(clientName, clientSurname, clientPhoneNumber);
         if (res >= 0) {
-            System.out.println("Client created: " + clientService.readClient(res));
-            return clientService.readClient(res);
+            System.out.println("Client created: " + clientService.getClient(res));
+            return clientService.getClient(res);
         }
         System.out.println();
         return null;
@@ -124,7 +124,7 @@ public class ClientMenu {
 
     private void showClientOrders(Client client) {
         if (client != null) {
-            for (Order order : orderService.readAll()) {
+            for (Order order : orderService.getAllOrders()) {
                 if (order.getClient().equals(client))
                     System.out.println(order);
             }

@@ -10,7 +10,6 @@ public class MainMenu {
     private AdminMenu adminMenu;
     private ClientMenu clientMenu;
 
-    //TODO: DI+IoC
     public MainMenu(BufferedReader bufferedReader, AdminMenu adminMenu, ClientMenu clientMenu) {
         this.bufferedReader = bufferedReader;
         this.adminMenu = adminMenu;

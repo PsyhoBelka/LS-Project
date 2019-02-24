@@ -23,14 +23,14 @@ public interface OrderService {
      * @param id order-id for read
      * @return instance of read order
      */
-    Order readOrder(long id);
+    Order getOrder(long id);
 
     /**
      * Read all available orders
      *
      * @return list of all orders
      */
-    List<Order> readAll();
+    List<Order> getAllOrders();
 
     /**
      * Calculate order's total amount

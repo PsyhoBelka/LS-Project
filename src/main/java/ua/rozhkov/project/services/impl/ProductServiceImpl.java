@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product readProduct(long idProduct) {
+    public Product getProduct(long idProduct) {
         if (idProduct >= 0) {
             return productDAO.get(idProduct);
         }
@@ -42,14 +42,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> readAllProducts() {
+    public List<Product> getAllProducts() {
         return productDAO.getAll();
     }
 
     @Override
     public boolean updateProduct(long idProduct, String name, BigDecimal price) {
         if (idProduct >= 0) {
-            Product updProduct = readProduct(idProduct);
+            Product updProduct = getProduct(idProduct);
             if (!name.isEmpty())
                 updProduct.setName(name);
             if (price.equals(BigDecimal.ZERO))

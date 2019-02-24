@@ -41,7 +41,7 @@ public class AdminMenu {
                     break;
                 case "3"://Show all clients
                     System.out.println("Registered clients:");
-                    for (Client client : clientService.readAllClients()) {
+                    for (Client client : clientService.getAllClients()) {
                         System.out.println(client);
                     }
                     System.out.println();
@@ -68,7 +68,7 @@ public class AdminMenu {
                     deleteProduct();
                     break;
                 case "21"://Show all orders
-                    orderService.readAll();
+                    orderService.getAllOrders();
                     break;
                 case "22"://Update order status
                     updateOrderStatus();
@@ -140,13 +140,13 @@ public class AdminMenu {
         String clientEmail = bufferedReader.readLine();
         long res = clientService.createClient(clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
         if (res >= 0) {
-            System.out.println("Client created: " + clientService.readClient(res));
+            System.out.println("Client created: " + clientService.getClient(res));
         }
         System.out.println();
     }
 
     private void showClientInfo() throws IOException {
-        System.out.println(clientService.readClient(getId("Enter client id to view: ")));
+        System.out.println(clientService.getClient(getId("Enter client id to view: ")));
         System.out.println();
     }
 
@@ -187,7 +187,7 @@ public class AdminMenu {
     }
 
     private boolean checkClientExist(long idClient) {
-        return (idClient >= 0) && (clientService.readClient(idClient) != null);
+        return (idClient >= 0) && (clientService.getClient(idClient) != null);
     }
 
     //PRODUCT MENU METHODS
@@ -205,7 +205,7 @@ public class AdminMenu {
         long idProduct = getId("Enter product id to view: ");
 
         if (checkProductExist(idProduct)) {
-            System.out.println(productService.readProduct(idProduct));
+            System.out.println(productService.getProduct(idProduct));
         } else
             System.out.println("Wrong id!");
 
@@ -213,7 +213,7 @@ public class AdminMenu {
     }
 
     private void showAllProducts() {
-        for (Product product : productService.readAllProducts()) {
+        for (Product product : productService.getAllProducts()) {
             System.out.println(product);
         }
         System.out.println();
@@ -232,7 +232,7 @@ public class AdminMenu {
             BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
             if (productService.updateProduct(idProduct, nameProduct, priceProduct)) {
-                System.out.println("Product updated! " + productService.readProduct(idProduct));
+                System.out.println("Product updated! " + productService.getProduct(idProduct));
             }
         } else
             System.out.println("Wrong id!");
@@ -254,7 +254,7 @@ public class AdminMenu {
     }
 
     private boolean checkProductExist(long idProduct) {
-        return ((idProduct >= 0) && (productService.readProduct(idProduct) != null));
+        return ((idProduct >= 0) && (productService.getProduct(idProduct) != null));
     }
 
     //ORDER MENU METHODS
@@ -319,7 +319,7 @@ public class AdminMenu {
     }
 
     private boolean checkOrderExist(long idOrder) {
-        return ((idOrder >= 0) && (orderService.readOrder(idOrder) != null));
+        return ((idOrder >= 0) && (orderService.getOrder(idOrder) != null));
     }
 
 }

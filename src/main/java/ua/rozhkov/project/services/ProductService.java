@@ -21,14 +21,14 @@ public interface ProductService {
      * @param id id of product to be returned
      * @return instance of product with specified id
      */
-    Product readProduct(long id);
+    Product getProduct(long id);
 
     /**
      * Return all available products
      *
      * @return list of all available products
      */
-    List<Product> readAllProducts();
+    List<Product> getAllProducts();
 
     /**
      * Update some product with specified data

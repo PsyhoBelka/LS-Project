@@ -34,14 +34,14 @@ public interface ClientService {
      * @param idClient id client for show
      * @return instance of Client with specified Id
      */
-    Client readClient(long idClient);
+    Client getClient(long idClient);
 
     /**
      * Show all exist clients
      *
      * @return list of Clients
      */
-    List<Client> readAllClients();
+    List<Client> getAllClients();
 
     /**
      * Change client's info

@@ -21,28 +21,45 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class App {
+    private static ValidationService validationService;
+    private static ProductService productService;
+    private static ClientService clientService;
+    private static OrderService orderService;
+
     public static void main(String[] args) throws IOException, BusinessException {
-        if (true)
-            throw new BusinessException("1243134");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        ValidationService validationService = ValidationServiceImpl.getInstance();
+        if (initServices()) {
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-        ProductService productService = ProductServiceImpl.getInstance();
-        ((ProductServiceImpl) productService).setProductDAO(ProductDAOImpl.getInstance());
+            ((ProductServiceImpl) productService).setProductDAO(ProductDAOImpl.getInstance());
 
-        ClientService clientService = ClientServiceImpl.getInstance();
-        ((ClientServiceImpl) clientService).setClientDAO(ClientDAOImpl.getInstance());
-        ((ClientServiceImpl) clientService).setValidationService(ValidationServiceImpl.getInstance());
+            ((ClientServiceImpl) clientService).setClientDAO(ClientDAOImpl.getInstance());
+            ((ClientServiceImpl) clientService).setValidationService(ValidationServiceImpl.getInstance());
 
-        OrderService orderService = OrderServiceImpl.getInstance();
-        ((OrderServiceImpl) orderService).setOrderDAO(OrderDAOImpl.getInstance());
-        ((OrderServiceImpl) orderService).setProductDAO(ProductDAOImpl.getInstance());
+            ((OrderServiceImpl) orderService).setOrderDAO(OrderDAOImpl.getInstance());
+            ((OrderServiceImpl) orderService).setProductDAO(ProductDAOImpl.getInstance());
 
-        AdminMenu adminMenu = new AdminMenu(bufferedReader, clientService, productService, orderService, validationService);
-        ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService, validationService, clientService);
+            AdminMenu adminMenu = new AdminMenu(bufferedReader, clientService, productService, orderService, validationService);
+            ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService, validationService, clientService);
 
-        MainMenu mainMenu = new MainMenu(bufferedReader, adminMenu, clientMenu);
-        mainMenu.show();
+            MainMenu mainMenu = new MainMenu(bufferedReader, adminMenu, clientMenu);
+            mainMenu.show();
+        } else {
+            System.out.println("Something went wrong! App closing!");
+            System.exit(1);
+        }
+    }
+
+    static boolean initServices() {
+        try {
+            validationService = ValidationServiceImpl.getInstance();
+            productService = ProductServiceImpl.getInstance();
+            clientService = ClientServiceImpl.getInstance();
+            orderService = OrderServiceImpl.getInstance();
+        } catch (Exception e) {
+            System.out.println("Services not initialized!");
+            return false;
+        }
+        return true;
     }
 }

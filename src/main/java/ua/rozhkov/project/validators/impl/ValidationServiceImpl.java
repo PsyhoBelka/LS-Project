@@ -20,7 +20,7 @@ public class ValidationServiceImpl implements ValidationService {
 
     @Override
     public boolean validateAge(int age) throws BusinessException {
-        return ((age < 0) || (age > 120));
+        return ((age >= 0) && (age <= 120));
     }
 
     @Override

@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order readOrder(long idOrder) {
+    public Order getOrder(long idOrder) {
         if (idOrder >= 0)
             return orderDAO.get(idOrder);
         else
@@ -57,7 +57,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> readAll() {
+    public List<Order> getAllOrders() {
         return orderDAO.getAll();
     }
 
