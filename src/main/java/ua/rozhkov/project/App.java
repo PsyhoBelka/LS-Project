@@ -5,6 +5,7 @@ import ua.rozhkov.project.dao.impl.OrderDAOImpl;
 import ua.rozhkov.project.dao.impl.ProductDAOImpl;
 import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.services.ClientService;
+import ua.rozhkov.project.services.DatabaseService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
 import ua.rozhkov.project.services.impl.ClientServiceImpl;
@@ -27,7 +28,8 @@ public class App {
     private static OrderService orderService;
 
     public static void main(String[] args) throws IOException, BusinessException {
-
+        DatabaseService databaseService = new DatabaseService();
+//        System.out.println(App.class.getClassLoader().getResource("create_clients.sql").getPath());
         if (initServices()) {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
