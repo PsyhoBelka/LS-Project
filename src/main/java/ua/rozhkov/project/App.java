@@ -1,6 +1,6 @@
 package ua.rozhkov.project;
 
-import ua.rozhkov.project.dao.impl.ClientDAOImpl;
+import ua.rozhkov.project.dao.impl.ClientDbDAOImpl;
 import ua.rozhkov.project.dao.impl.OrderDAOImpl;
 import ua.rozhkov.project.dao.impl.ProductDAOImpl;
 import ua.rozhkov.project.exceptions.BusinessException;
@@ -28,15 +28,20 @@ public class App {
     private static OrderService orderService;
 
     public static void main(String[] args) throws IOException, BusinessException {
-        DatabaseService databaseService = new DatabaseService();
-//        System.out.println(App.class.getClassLoader().getResource("create_clients.sql").getPath());
+
+        DatabaseService databaseService = DatabaseService.getInstance();
+        //        ClientDbDAOImpl.getInstance().setDatabaseService(databaseService);
+        //        ClientDbDAOImpl.getInstance().getAll();
+
         if (initServices()) {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
             ((ProductServiceImpl) productService).setProductDAO(ProductDAOImpl.getInstance());
 
-            ((ClientServiceImpl) clientService).setClientDAO(ClientDAOImpl.getInstance());
+            ((ClientServiceImpl) clientService).setClientDAO(ClientDbDAOImpl.getInstance());
             ((ClientServiceImpl) clientService).setValidationService(ValidationServiceImpl.getInstance());
+
+            ClientDbDAOImpl.getInstance().setDatabaseService(databaseService);
 
             ((OrderServiceImpl) orderService).setOrderDAO(OrderDAOImpl.getInstance());
             ((OrderServiceImpl) orderService).setProductDAO(ProductDAOImpl.getInstance());

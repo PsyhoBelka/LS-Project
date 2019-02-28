@@ -40,16 +40,16 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException {
-        if (validationService.validateEmail(email) &&
-                validationService.validatePhoneNum(phoneNumber) &&
-                validationService.validateAge(age)) {
-            for (Client client : getAllClients()) {
-                if (client.getPhoneNumber().equals(phoneNumber))
-                    throw new BusinessException("Duplicate phone number");
-            }
-            return new Client(name, surname, age, phoneNumber, email).getId();
-        }
-        return -1;
+        //        if (validationService.validateEmail(email) &&
+        //                validationService.validatePhoneNum(phoneNumber) &&
+        //                validationService.validateAge(age)) {
+        //            for (Client client : getAllClients()) {
+        //                if (client.getPhoneNumber().equals(phoneNumber))
+        //                    throw new BusinessException("Duplicate phone number");
+        //            }
+        return clientDAO.create(new Client(name, surname, age, phoneNumber, email));
+        //        }
+        //        return -1;
     }
 
     @Override

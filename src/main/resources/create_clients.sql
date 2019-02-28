@@ -1,20 +1,10 @@
-create table CLIENTS
+CREATE TABLE clients
 (
-  ID          BIGINT auto_increment,
-  NAME        VARCHAR(30),
-  SURNAME     VARCHAR(30),
-  AGE         INTEGER,
-  PHONENUMBER VARCHAR(10),
-  EMAIL       VARCHAR
+    id long AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name varchar(30),
+    surname varchar(30),
+    age int,
+    phone_number varchar(10),
+    email varchar
 );
-
-create unique index CLIENTS_ID_UINDEX
-  on CLIENTS (ID);
-
-create unique index PRIMARY_KEY
-  on CLIENTS (ID);
-
-alter table CLIENTS
-  add constraint CLIENTS_PK
-    primary key (ID);
-
+CREATE UNIQUE INDEX clients_id_uindex ON clients (id);

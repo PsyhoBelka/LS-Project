@@ -1,16 +1,7 @@
-create table ORDERS
+CREATE TABLE orders
 (
-  ID          BIGINT auto_increment,
-  ORDERSTATUS VARCHAR
+    id long AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    client_id long NOT NULL,
+    order_status varchar(20)
 );
-
-create unique index ORDERS_ID_UINDEX
-  on ORDERS (ID);
-
-create unique index PRIMARY_KEY
-  on ORDERS (ID);
-
-alter table ORDERS
-  add constraint ORDERS_PK
-    primary key (ID);
-
+CREATE UNIQUE INDEX orders_id_uindex ON orders (id);

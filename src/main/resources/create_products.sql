@@ -1,16 +1,7 @@
-create table PRODUCTS
+CREATE TABLE products
 (
-  ID    BIGINT auto_increment,
-  NAME  VARCHAR(100),
-  PRICE DOUBLE
+    id long AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name varchar(50),
+    price float
 );
-
-create unique index PRODUCTS_ID_UINDEX
-  on PRODUCTS (ID);
-
-create unique index PRIMARY_KEY
-  on PRODUCTS (ID);
-
-alter table PRODUCTS
-  add constraint PRODUCTS_PK
-    primary key (ID);
+CREATE UNIQUE INDEX products_id_uindex ON products (id);

@@ -8,6 +8,9 @@ public class Client {
     private String phoneNumber;
     private String email;
 
+    public Client() {
+    }
+
     public Client(String name, String surname, int age,
                   String phoneNumber, String email) {
         this.name = name;
