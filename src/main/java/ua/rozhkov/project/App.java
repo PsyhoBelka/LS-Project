@@ -2,7 +2,7 @@ package ua.rozhkov.project;
 
 import ua.rozhkov.project.dao.impl.ClientDbDAOImpl;
 import ua.rozhkov.project.dao.impl.OrderDAOImpl;
-import ua.rozhkov.project.dao.impl.ProductDAOImpl;
+import ua.rozhkov.project.dao.impl.ProductDbDAOImpl;
 import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.DatabaseService;
@@ -36,15 +36,16 @@ public class App {
         if (initServices()) {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-            ((ProductServiceImpl) productService).setProductDAO(ProductDAOImpl.getInstance());
+            ((ProductServiceImpl) productService).setProductDAO(ProductDbDAOImpl.getInstance());
 
             ((ClientServiceImpl) clientService).setClientDAO(ClientDbDAOImpl.getInstance());
             ((ClientServiceImpl) clientService).setValidationService(ValidationServiceImpl.getInstance());
 
             ClientDbDAOImpl.getInstance().setDatabaseService(databaseService);
+            ProductDbDAOImpl.getInstance().setDatabaseService(databaseService);
 
             ((OrderServiceImpl) orderService).setOrderDAO(OrderDAOImpl.getInstance());
-            ((OrderServiceImpl) orderService).setProductDAO(ProductDAOImpl.getInstance());
+            ((OrderServiceImpl) orderService).setProductDAO(ProductDbDAOImpl.getInstance());
 
             AdminMenu adminMenu = new AdminMenu(bufferedReader, clientService, productService, orderService, validationService);
             ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService, validationService, clientService);

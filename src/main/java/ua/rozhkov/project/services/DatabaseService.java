@@ -11,7 +11,9 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class DatabaseService {
-    //    private static final String DB_URL = "jdbc:h2:file:./db/shop";
+    //    jdbc:h2:file:D:/JAVA/LS-Project/src/main/resources/db/shop
+    //    jdbc:h2:file:D:/JAVA/LS-Project/target/classes/db/shop
+
     private static final String USERNAME = "admin";
     private static final String PASSWORD = "admin";
 
