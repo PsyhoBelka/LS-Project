@@ -43,7 +43,8 @@ public class OrderServiceImpl implements OrderService {
             for (long idProduct : idsProducts) {
                 orderToCreate.getProducts().add(productDAO.get(idProduct));
             }
-            return orderDAO.create(orderToCreate);
+            //TODO fix here
+            //            return orderDAO.create(orderToCreate);
         }
         return -1;
     }

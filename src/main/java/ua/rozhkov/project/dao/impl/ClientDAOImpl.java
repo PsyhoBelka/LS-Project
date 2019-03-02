@@ -25,14 +25,15 @@ public class ClientDAOImpl implements ClientDAO {
     }
 
     @Override
-    public long create(Client newEntity) {
+    public boolean create(Client newEntity) {
 //        System.out.println("Client created! " + newEntity);
         if (newEntity != null) {
             newEntity.setId(index++);
             clientsT.add(newEntity);
-            return newEntity.getId();
+            //            return newEntity.getId();
         }
-        return -1;
+        //        return -1;
+        return true;
     }
 
     @Override

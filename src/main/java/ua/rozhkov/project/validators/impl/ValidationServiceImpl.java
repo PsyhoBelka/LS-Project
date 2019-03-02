@@ -1,6 +1,5 @@
 package ua.rozhkov.project.validators.impl;
 
-import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.validators.ValidationService;
 
 import java.util.regex.Matcher;
@@ -19,21 +18,21 @@ public class ValidationServiceImpl implements ValidationService {
     }
 
     @Override
-    public boolean validateAge(int age) throws BusinessException {
+    public boolean validateAge(int age) {
         return ((age >= 0) && (age <= 120));
     }
 
     @Override
     public boolean validateEmail(String email) {
-        Pattern pattern = Pattern.compile("[a-zA-Z\\d.\\-_]+@[a-zA-Z\\d]+.[a-z]+", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("^[\\w.-]+@[\\w.]+$", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
-        return matcher.find();
+        return matcher.matches();
     }
 
     @Override
     public boolean validatePhoneNum(String phoneNum) {
         Pattern pattern = Pattern.compile("(050|067|097)([\\d]{7})");
         Matcher matcher = pattern.matcher(phoneNum);
-        return matcher.find();
+        return matcher.matches();
     }
 }

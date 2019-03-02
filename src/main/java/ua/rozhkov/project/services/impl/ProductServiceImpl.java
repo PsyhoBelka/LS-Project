@@ -30,7 +30,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public long createProduct(String name, BigDecimal price) {
         Product newProduct = new Product(name, price);
-        return productDAO.create(newProduct);
+        //TODO fix here
+        //        return productDAO.create(newProduct);
+        return 1;
     }
 
     @Override

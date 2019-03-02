@@ -9,7 +9,7 @@ public interface DAO<T> {
      * @param newEntity new entity to save
      * @return id of newly created entity
      */
-    long create(T newEntity);
+    boolean create(T newEntity);
 
     /**
      * Get entity with specified id

@@ -85,7 +85,8 @@ public class ClientMenu {
     }
 
     private Client findClient() throws IOException {
-        System.out.println("Enter you phoneNumber(10 digits): ");
+        //TODO fix here
+        /*System.out.println("Enter you phoneNumber(10 digits): ");
         String input = bufferedReader.readLine();
         try {
             if (validationService.validatePhoneNum(input)) {
@@ -98,7 +99,7 @@ public class ClientMenu {
             ex.printStackTrace();
             System.out.println("Wrong phone number! You unauthorized!");
             return null;
-        }
+        }*/
         return null;
     }
 
@@ -113,10 +114,11 @@ public class ClientMenu {
         System.out.print("Enter phone number: ");
         String clientPhoneNumber = bufferedReader.readLine();
 
-        long res = clientService.createClient(clientName, clientSurname, clientPhoneNumber);
-        if (res >= 0) {
-            System.out.println("Client created: " + clientService.getClient(res));
-            return clientService.getClient(res);
+        boolean res = clientService.createClient(clientName, clientSurname, clientPhoneNumber);
+        if (res) {
+            System.out.println("Client created!");
+            //TODO fix here
+            //            return clientService.getClient(res);
         }
         System.out.println();
         return null;

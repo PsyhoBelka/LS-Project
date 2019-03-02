@@ -13,7 +13,7 @@ public interface ValidationService {
      * @return true, if validation pass
      * @throws BusinessException with some text explanation if something wrong
      */
-    boolean validateAge(int age) throws BusinessException;
+    boolean validateAge(int age);
 
     /**
      * Validate email of client
@@ -22,7 +22,7 @@ public interface ValidationService {
      * @return true, if validation pass
      * @throws BusinessException with some text explanation if something wrong
      */
-    boolean validateEmail(String email) throws BusinessException;
+    boolean validateEmail(String email);
 
     /**
      * Validate phone number of client
@@ -31,5 +31,5 @@ public interface ValidationService {
      * @return true, if validation pass
      * @throws BusinessException with some text explanation if something wrong
      */
-    boolean validatePhoneNum(String phoneNum) throws BusinessException;
+    boolean validatePhoneNum(String phoneNum);
 }

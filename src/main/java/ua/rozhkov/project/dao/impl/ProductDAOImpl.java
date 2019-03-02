@@ -25,10 +25,11 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public long create(Product newEntity) {
+    public boolean create(Product newEntity) {
         newEntity.setId(index++);
         productsT.add(newEntity);
-        return newEntity.getId();
+        //        return newEntity.getId();
+        return true;
     }
 
     @Override

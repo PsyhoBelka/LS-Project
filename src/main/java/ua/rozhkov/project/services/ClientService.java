@@ -16,7 +16,7 @@ public interface ClientService {
      * @param email       client's email
      * @return id of newly created client
      */
-    long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException;
+    boolean createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException;
 
     /**
      * Simplified form of client creation for client self-registering
@@ -26,7 +26,7 @@ public interface ClientService {
      * @param clientPhoneNumber client phone number
      * @return id of newly created client
      */
-    long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException;
+    boolean createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException;
 
     /**
      * Show client's info

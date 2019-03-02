@@ -24,10 +24,11 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public long create(Order newEntity) {
+    public boolean create(Order newEntity) {
         newEntity.setId(index++);
         ordersT.add(newEntity);
-        return newEntity.getId();
+        //        return newEntity.getId();
+        return true;
     }
 
     @Override

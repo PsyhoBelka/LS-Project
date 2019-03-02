@@ -11,8 +11,9 @@ public class Client {
     public Client() {
     }
 
-    public Client(String name, String surname, int age,
+    public Client(long id, String name, String surname, int age,
                   String phoneNumber, String email) {
+        this.id = id;
         this.name = name;
         this.surname = surname;
         this.age = age;

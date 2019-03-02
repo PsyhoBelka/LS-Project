@@ -39,36 +39,46 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public long createClient(String name, String surname, int age, String phoneNumber, String email) throws BusinessException {
-        //        if (validationService.validateEmail(email) &&
-        //                validationService.validatePhoneNum(phoneNumber) &&
-        //                validationService.validateAge(age)) {
-        //            for (Client client : getAllClients()) {
-        //                if (client.getPhoneNumber().equals(phoneNumber))
-        //                    throw new BusinessException("Duplicate phone number");
-        //            }
-        return clientDAO.create(new Client(name, surname, age, phoneNumber, email));
-        //        }
-        //        return -1;
+    public boolean createClient(String name, String surname, int age, String phoneNumber, String email) {
+        if (!validationService.validateEmail(email)) {
+            System.out.println("Wrong email format!");
+            return false;
+
+        }
+        if (!validationService.validatePhoneNum(phoneNumber)) {
+            System.out.println("Wrong phone number format!");
+            return false;
+        }
+        if (!validationService.validateAge(age)) {
+            System.out.println("Wrong age!");
+            return false;
+        }
+
+        for (Client client : getAllClients()) {
+            if (client.getPhoneNumber().equals(phoneNumber)) {
+                System.out.println("Duplicate phone number!");
+                return false;
+            }
+        }
+
+        return clientDAO.create(new Client(0, name, surname, age, phoneNumber, email));
     }
 
     @Override
-    public long createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException {
-        if (validationService.validatePhoneNum(clientPhoneNumber)) {
+    public boolean createClient(String clientName, String clientSurname, String clientPhoneNumber) throws BusinessException {
+        if (!validationService.validatePhoneNum(clientPhoneNumber)) {
             for (Client client : getAllClients()) {
                 if (client.getPhoneNumber().equals(clientPhoneNumber))
                     throw new BusinessException("Duplicate phone number");
             }
-            return new Client(clientName, clientSurname, clientPhoneNumber).getId();
+            return clientDAO.create(new Client(clientName, clientSurname, clientPhoneNumber));
         }
-        return -1;
+        return false;
     }
 
     @Override
     public Client getClient(long idClient) {
-        if (idClient >= 0)
-            return clientDAO.get(idClient);
-        return null;
+        return clientDAO.get(idClient);
     }
 
     @Override
@@ -78,33 +88,25 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean updateClient(long idClient, String name, String surname, int age, String phoneNumber, String email) {
-        if (idClient >= 0) {
+        if (idClient > 0) {
             Client updatedClient = getClient(idClient);
             if (!name.isEmpty())
                 updatedClient.setName(name);
             if (!surname.isEmpty())
                 updatedClient.setSurname(surname);
-            try {
-                if (age != 0 && validationService.validateAge(age))
-                    updatedClient.setAge(age);
-            } catch (BusinessException e) {
-                e.printStackTrace();
+            if (age != 0 && !validationService.validateAge(age)) {
+                updatedClient.setAge(age);
                 System.out.println("Wrong age!");
                 return false;
             }
-            try {
-                if (!phoneNumber.isEmpty() && validationService.validatePhoneNum(phoneNumber))
-                    updatedClient.setPhoneNumber(phoneNumber);
-            } catch (BusinessException e) {
-                e.printStackTrace();
+
+            if (!phoneNumber.isEmpty() && validationService.validatePhoneNum(phoneNumber)) {
+                updatedClient.setPhoneNumber(phoneNumber);
                 System.out.println("Wrong phone number!");
                 return false;
             }
-            try {
-                if (!email.isEmpty() && validationService.validateEmail(email))
-                    updatedClient.setEmail(email);
-            } catch (BusinessException e) {
-                e.printStackTrace();
+            if (!email.isEmpty() && validationService.validateEmail(email)) {
+                updatedClient.setEmail(email);
                 System.out.println("Wrong email!");
                 return false;
             }
@@ -115,9 +117,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public boolean deleteClient(long idClient) {
-        if (idClient >= 0)
-            return clientDAO.delete(idClient);
-        return false;
+        return clientDAO.delete(idClient);
     }
 
 }

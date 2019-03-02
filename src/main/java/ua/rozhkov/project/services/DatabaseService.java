@@ -19,6 +19,9 @@ public class DatabaseService {
     private final String PRODUCTS_TN = "PRODUCTS";
     private final String ORDERS_TN = "ORDERS";
 
+    //    private final boolean DROP_DB = true;
+    private final boolean DROP_DB = false;
+
     private static volatile DatabaseService instance;
 
     //    private final String clientsSQLFile = "create_clients.sql";
@@ -26,7 +29,9 @@ public class DatabaseService {
     //    private final String productsSQLFile = "create_products.sql";
 
     public DatabaseService() {
-        dropTables();
+        if (DROP_DB) {
+            dropTables();
+        }
 
         if (!existTable(CLIENTS_TN)) {
             createTable(CLIENTS_TN, readSQLFile(CLIENTS_TN));

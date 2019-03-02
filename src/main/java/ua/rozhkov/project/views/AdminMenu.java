@@ -129,7 +129,7 @@ public class AdminMenu {
         System.out.print("Enter surname: ");
         String clientSurname = bufferedReader.readLine();
 
-        int clientAge = 0;
+        int clientAge;
         System.out.print("Enter age: ");
         clientAge = validateInputAge(bufferedReader.readLine());
 
@@ -138,10 +138,11 @@ public class AdminMenu {
 
         System.out.print("Enter email: ");
         String clientEmail = bufferedReader.readLine();
-        long res = clientService.createClient(clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
-        if (res >= 0) {
-            System.out.println("Client created: " + clientService.getClient(res));
-        }
+        boolean res = clientService.createClient(clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+        if (res) {
+            System.out.println("Client created!");
+        } else
+            System.out.println("Client not created!");
         System.out.println();
     }
 
@@ -171,7 +172,11 @@ public class AdminMenu {
             System.out.print("Enter new email: ");
             String clientEmail = bufferedReader.readLine();
 
-            clientService.updateClient(idClient, clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+            boolean res = clientService.updateClient(idClient, clientName, clientSurname, clientAge, clientPhoneNumber, clientEmail);
+            if (res)
+                System.out.println("Client updated!");
+            else
+                System.out.println("Client not updated");
         } else
             System.out.println("Client not found!");
         System.out.println();
