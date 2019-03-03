@@ -41,9 +41,8 @@ public class ClientDbDAOImpl implements ClientDAO {
                 preparedStatement.setInt(3, newEntity.getAge());
                 preparedStatement.setString(4, newEntity.getPhoneNumber());
                 preparedStatement.setString(5, newEntity.getEmail());
-                boolean res = preparedStatement.execute();
-                if (res)
-                    return true;
+                preparedStatement.execute();
+                return true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -59,7 +58,8 @@ public class ClientDbDAOImpl implements ClientDAO {
                         "select * from CLIENTS where ID=?");
                 preparedStatement.setInt(1, (int) idEntity);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                return setClientFromResultSet(resultSet);
+                if (resultSet.next())
+                    return setClientFromResultSet(resultSet);
             } catch (
                     SQLException e) {
                 e.printStackTrace();
@@ -89,12 +89,13 @@ public class ClientDbDAOImpl implements ClientDAO {
         if ((idEntity > 0) && (updatedEntity != null)) {
             try (Connection connection = databaseService.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "update CLIENTS set NAME=?,SURNAME=?,AGE=?,PHONE_NUMBER=?,EMAIL=?");
+                        "update CLIENTS set NAME=?,SURNAME=?,AGE=?,PHONE_NUMBER=?,EMAIL=? where ID=?");
                 preparedStatement.setString(1, updatedEntity.getName());
                 preparedStatement.setString(2, updatedEntity.getSurname());
                 preparedStatement.setInt(3, updatedEntity.getAge());
                 preparedStatement.setString(4, updatedEntity.getPhoneNumber());
                 preparedStatement.setString(5, updatedEntity.getEmail());
+                preparedStatement.setInt(6, (int) idEntity);
                 if (preparedStatement.executeUpdate() > 0) {
                     return true;
                 }

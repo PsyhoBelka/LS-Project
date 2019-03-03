@@ -11,9 +11,9 @@ public interface ProductService {
      *
      * @param name  name of new product
      * @param price price of new product
-     * @return id of newly created product
+     * @return true, if operation successfully
      */
-    long createProduct(String name, BigDecimal price);
+    boolean createProduct(String name, BigDecimal price);
 
     /**
      * Return product with specified id

@@ -45,9 +45,8 @@ public class ProductDbDAOImpl implements ProductDAO {
                                 "VALUES (?, ?)");
                 preparedStatement.setString(1, newEntity.getName());
                 preparedStatement.setBigDecimal(2, newEntity.getPrice());
-                boolean res = preparedStatement.execute();
-                if (res)
-                    return true;
+                preparedStatement.execute();
+                return true;
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -63,7 +62,8 @@ public class ProductDbDAOImpl implements ProductDAO {
                         "select * from PRODUCTS where ID=?");
                 preparedStatement.setInt(1, (int) idEntity);
                 ResultSet resultSet = preparedStatement.executeQuery();
-                return setProductFromResultSet(resultSet);
+                if (resultSet.next())
+                    return setProductFromResultSet(resultSet);
             } catch (
                     SQLException e) {
                 e.printStackTrace();
@@ -93,9 +93,10 @@ public class ProductDbDAOImpl implements ProductDAO {
         if ((idEntity > 0) && (updatedEntity != null)) {
             try (Connection connection = databaseService.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "update PRODUCTS set NAME=?,PRICE=?");
+                        "update PRODUCTS set NAME=?,PRICE=? where ID=?");
                 preparedStatement.setString(1, updatedEntity.getName());
                 preparedStatement.setBigDecimal(2, updatedEntity.getPrice());
+                preparedStatement.setInt(3, (int) idEntity);
                 if (preparedStatement.executeUpdate() > 0) {
                     return true;
                 }

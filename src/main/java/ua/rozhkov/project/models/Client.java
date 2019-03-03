@@ -29,14 +29,14 @@ public class Client {
 
     @Override
     public String toString() {
-        return "Client{" +
+        return "Client [" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", age=" + age +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                '}';
+                ']';
     }
 
     public long getId() {

@@ -155,7 +155,7 @@ public class AdminMenu {
         long idClient = getId("Enter client id to edit: ");
 
         if (checkClientExist(idClient)) {
-            System.out.print("Enter new data, leave blank to not change");
+            System.out.println("Enter new data, leave blank to not change");
 
             System.out.print("Enter new name: ");
             String clientName = bufferedReader.readLine();
@@ -164,7 +164,10 @@ public class AdminMenu {
             String clientSurname = bufferedReader.readLine();
 
             System.out.print("Enter new age: ");
-            int clientAge = Integer.parseInt(bufferedReader.readLine());
+            String strClientAge = bufferedReader.readLine();
+            int clientAge = 0;
+            if (!strClientAge.isEmpty())
+                clientAge = Integer.parseInt(clientName);
 
             System.out.print("Enter new phone number: ");
             String clientPhoneNumber = bufferedReader.readLine();
@@ -185,7 +188,10 @@ public class AdminMenu {
     private void deleteClient() throws IOException {
         long idClient = getId("Enter client id to delete: ");
         if (checkClientExist(idClient)) {
-            clientService.deleteClient(idClient);
+            if (clientService.deleteClient(idClient))
+                System.out.println("Client deleted!");
+            else
+                System.out.println("Client not deleted!");
         } else
             System.out.println("Client not found");
         System.out.println();
@@ -203,7 +209,12 @@ public class AdminMenu {
         System.out.print("Enter price: ");
         BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
-        productService.createProduct(nameProduct, priceProduct);
+        boolean res = productService.createProduct(nameProduct, priceProduct);
+        if (res)
+            System.out.println("Product created!");
+        else
+            System.out.println("Product not created!");
+        System.out.println();
     }
 
     private void showProductInfo() throws IOException {
@@ -228,7 +239,7 @@ public class AdminMenu {
         long idProduct = getId("Enter product id to edit: ");
 
         if (checkProductExist(idProduct)) {
-            System.out.print("Enter new data, leave blank to not change");
+            System.out.println("Enter new data, leave blank to not change");
 
             System.out.print("Enter new name: ");
             String nameProduct = bufferedReader.readLine();
@@ -236,9 +247,11 @@ public class AdminMenu {
             System.out.print("Enter new price: ");
             BigDecimal priceProduct = validateProductPrice(bufferedReader.readLine());
 
-            if (productService.updateProduct(idProduct, nameProduct, priceProduct)) {
-                System.out.println("Product updated! " + productService.getProduct(idProduct));
-            }
+            boolean res = productService.updateProduct(idProduct, nameProduct, priceProduct);
+            if (res)
+                System.out.println("Product updated!");
+            else
+                System.out.println("Product not updated!");
         } else
             System.out.println("Wrong id!");
 

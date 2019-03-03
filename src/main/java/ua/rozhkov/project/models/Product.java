@@ -20,10 +20,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Product{" +
-                "name='" + name + '\'' +
+        return "Product [" +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", price=" + price +
-                '}';
+                ']';
     }
 
     public long getId() {

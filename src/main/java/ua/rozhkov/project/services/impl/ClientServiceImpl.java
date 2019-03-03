@@ -94,7 +94,7 @@ public class ClientServiceImpl implements ClientService {
                 updatedClient.setName(name);
             if (!surname.isEmpty())
                 updatedClient.setSurname(surname);
-            if (age != 0 && !validationService.validateAge(age)) {
+            if (age != 0 && validationService.validateAge(age)) {
                 updatedClient.setAge(age);
                 System.out.println("Wrong age!");
                 return false;
