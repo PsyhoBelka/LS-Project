@@ -1,7 +1,7 @@
 package ua.rozhkov.project;
 
 import ua.rozhkov.project.dao.impl.ClientDbDAOImpl;
-import ua.rozhkov.project.dao.impl.OrderDAOImpl;
+import ua.rozhkov.project.dao.impl.OrderDbDAOImpl;
 import ua.rozhkov.project.dao.impl.ProductDbDAOImpl;
 import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.services.ClientService;
@@ -23,32 +23,35 @@ import java.io.InputStreamReader;
 
 public class App {
     private static ValidationService validationService;
+    private static DatabaseService databaseService;
+
     private static ProductService productService;
     private static ClientService clientService;
     private static OrderService orderService;
 
-    public static void main(String[] args) throws IOException, BusinessException {
+    private static ProductDbDAOImpl productDbDAO;
+    private static ClientDbDAOImpl clientDbDAO;
+    private static OrderDbDAOImpl orderDbDAO;
 
-        DatabaseService databaseService = DatabaseService.getInstance();
-        //        ClientDbDAOImpl.getInstance().setDatabaseService(databaseService);
-        //        ClientDbDAOImpl.getInstance().getAll();
+    public static void main(String[] args) throws IOException, BusinessException {
 
         if (initServices()) {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-            ((ProductServiceImpl) productService).setProductDAO(ProductDbDAOImpl.getInstance());
+            productDbDAO.setDatabaseService(databaseService);
+            clientDbDAO.setDatabaseService(databaseService);
+            orderDbDAO.setDatabaseService(databaseService);
 
-            ((ClientServiceImpl) clientService).setClientDAO(ClientDbDAOImpl.getInstance());
-            ((ClientServiceImpl) clientService).setValidationService(ValidationServiceImpl.getInstance());
+            ((ProductServiceImpl) productService).setProductDAO(productDbDAO);
 
-            ClientDbDAOImpl.getInstance().setDatabaseService(databaseService);
-            ProductDbDAOImpl.getInstance().setDatabaseService(databaseService);
+            ((ClientServiceImpl) clientService).setClientDAO(clientDbDAO);
+            ((ClientServiceImpl) clientService).setValidationService(validationService);
 
-            ((OrderServiceImpl) orderService).setOrderDAO(OrderDAOImpl.getInstance());
-            ((OrderServiceImpl) orderService).setProductDAO(ProductDbDAOImpl.getInstance());
+            ((OrderServiceImpl) orderService).setProductDAO(productDbDAO);
+            ((OrderServiceImpl) orderService).setOrderDAO(orderDbDAO);
 
-            AdminMenu adminMenu = new AdminMenu(bufferedReader, clientService, productService, orderService, validationService);
-            ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService, validationService, clientService);
+            AdminMenu adminMenu = new AdminMenu(bufferedReader, productService, orderService, clientService);
+            ClientMenu clientMenu = new ClientMenu(bufferedReader, productService, orderService, clientService, validationService);
 
             MainMenu mainMenu = new MainMenu(bufferedReader, adminMenu, clientMenu);
             mainMenu.show();
@@ -61,9 +64,16 @@ public class App {
     static boolean initServices() {
         try {
             validationService = ValidationServiceImpl.getInstance();
+            databaseService = DatabaseService.getInstance();
+
             productService = ProductServiceImpl.getInstance();
             clientService = ClientServiceImpl.getInstance();
             orderService = OrderServiceImpl.getInstance();
+
+            productDbDAO = ProductDbDAOImpl.getInstance();
+            clientDbDAO = ClientDbDAOImpl.getInstance();
+            orderDbDAO = OrderDbDAOImpl.getInstance();
+
         } catch (Exception e) {
             System.out.println("Services not initialized!");
             return false;
