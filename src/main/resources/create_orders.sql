@@ -1,7 +1,8 @@
-CREATE TABLE orders
+create table orders
 (
-    id long AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    client_id long NOT NULL,
-    order_status varchar(20)
+  id        bigint auto_increment,
+  status    varchar(20),
+  client_id bigint not null,
+  primary key (id),
+  foreign key (client_id) references clients (id)
 );
-CREATE UNIQUE INDEX orders_id_uindex ON orders (id);

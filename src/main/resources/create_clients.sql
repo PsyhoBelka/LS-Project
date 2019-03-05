@@ -1,10 +1,10 @@
-CREATE TABLE clients
+create table clients
 (
-    id long AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    name varchar(30),
-    surname varchar(30),
-    age int,
-    phone_number varchar(10),
-    email varchar
+  id           bigint auto_increment,
+  name         varchar(40),
+  surname      varchar(40),
+  age          int,
+  phone_number varchar(10),
+  email        varchar,
+  primary key (id)
 );
-CREATE UNIQUE INDEX clients_id_uindex ON clients (id);

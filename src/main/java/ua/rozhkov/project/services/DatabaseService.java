@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class DatabaseService {
@@ -20,8 +22,11 @@ public class DatabaseService {
     private final String CLIENTS_TN = "CLIENTS";
     private final String PRODUCTS_TN = "PRODUCTS";
     private final String ORDERS_TN = "ORDERS";
+    private final String ORDERS_PRODUCTS_TN = "ORDERS_PRODUCTS";
 
-    //    private final boolean DROP_DB = true;
+    private final List<String> tableNames = new ArrayList<>();
+
+    //        private final boolean DROP_DB = true;
     private final boolean DROP_DB = false;
 
     private static volatile DatabaseService instance;
@@ -31,11 +36,24 @@ public class DatabaseService {
     //    private final String productsSQLFile = "create_products.sql";
 
     public DatabaseService() {
+        tableNames.add("CLIENTS");
+        tableNames.add("PRODUCTS");
+        tableNames.add("ORDERS");
+        tableNames.add("ORDERS_PRODUCTS");
+
         if (DROP_DB) {
             dropTables();
         }
 
-        if (!existTable(CLIENTS_TN)) {
+        for (String tableName : tableNames) {
+            if (!existTable(tableName)) {
+                createTable(tableName, readSQLFile(tableName));
+                System.out.println("Table " + tableName + " created!");
+            } else
+                System.out.println("Table " + tableName + " already exist!");
+        }
+
+        /*if (!existTable(CLIENTS_TN)) {
             createTable(CLIENTS_TN, readSQLFile(CLIENTS_TN));
         } else
             System.out.println("Table " + CLIENTS_TN + " already exist!");
@@ -48,9 +66,8 @@ public class DatabaseService {
         if (!existTable(PRODUCTS_TN)) {
             createTable(PRODUCTS_TN, readSQLFile(PRODUCTS_TN));
         } else
-            System.out.println("Table " + PRODUCTS_TN + " already exist!");
+            System.out.println("Table " + PRODUCTS_TN + " already exist!");*/
 
-        System.out.println();
         System.out.println();
         System.out.println();
     }
@@ -67,9 +84,14 @@ public class DatabaseService {
     private void dropTables() {
         try (Connection connection = getConnection()) {
             Statement statement = connection.createStatement();
-            statement.execute("DROP table " + CLIENTS_TN + ";");
-            statement.execute("DROP table " + ORDERS_TN + ";");
-            statement.execute("DROP table " + PRODUCTS_TN + ";");
+
+            for (String tableName : tableNames) {
+                statement.execute("DROP table " + tableName + ";");
+            }
+            //            statement.execute("DROP table " + CLIENTS_TN + ";");
+            //            statement.execute("DROP table " + ORDERS_TN + ";");
+            //            statement.execute("DROP table " + PRODUCTS_TN + ";");
+
             System.out.println("Tables dropped!");
         } catch (SQLException e) {
             e.printStackTrace();
