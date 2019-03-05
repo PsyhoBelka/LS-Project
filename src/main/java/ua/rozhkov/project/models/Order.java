@@ -4,9 +4,10 @@ import java.util.List;
 
 public class Order {
     private long id;
+    private OrderStatus orderStatus;
+
     private Client client;
     private List<Product> products;
-    private OrderStatus orderStatus;
 
     public Order(Client client) {
         this.client = client;

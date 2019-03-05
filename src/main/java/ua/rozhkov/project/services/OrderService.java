@@ -15,7 +15,7 @@ public interface OrderService {
      * @param idsProducts products-id to create order
      * @return id of newly created order
      */
-    long createOrder(Client currClient, long[] idsProducts);
+    boolean createOrder(Client currClient, long[] idsProducts);
 
     /**
      * Read order by id

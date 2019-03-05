@@ -37,16 +37,16 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public long createOrder(Client client, long[] idsProducts) {
+    public boolean createOrder(Client client, long[] idsProducts) {
         if (client != null) {
             Order orderToCreate = new Order(client);
             for (long idProduct : idsProducts) {
                 orderToCreate.getProducts().add(productDAO.get(idProduct));
             }
-            //TODO fix here
-            //            return orderDAO.create(orderToCreate);
+            //            TODO fix here
+            return orderDAO.create(orderToCreate);
         }
-        return -1;
+        return false;
     }
 
     @Override

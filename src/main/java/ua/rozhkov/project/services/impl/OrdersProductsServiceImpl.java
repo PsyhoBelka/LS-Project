@@ -31,20 +31,7 @@ public class OrdersProductsServiceImpl implements OrdersProductsService {
     @Override
     public boolean createOrder(Order order, List<Product> products) {
         if ((order != null) && (products.size() > 0)) {
-            try (Connection connection = databaseService.getConnection()) {
-                for (Product product : products) {
-                    PreparedStatement preparedStatement = connection.prepareStatement(
-                            "insert into ORDERS_PRODUCTS (ORDER_ID, PRODUCT_ID) " +
-                                    "values (?,?)");
-                    preparedStatement.setLong(1, order.getId());
-                    preparedStatement.setLong(2, product.getId());
-                    preparedStatement.execute();
-                    preparedStatement.close();
-                    return true;
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+
         }
         return false;
     }
