@@ -15,16 +15,17 @@ public class ClientMenu {
     private BufferedReader bufferedReader;
     private ProductService productService;
     private OrderService orderService;
-    private ValidationService validationService;
     private ClientService clientService;
+    private ValidationService validationService;
+
     private Client currentClient = null;
 
-    public ClientMenu(BufferedReader bufferedReader, ProductService productService, OrderService orderService, ValidationService validationService, ClientService clientService) {
+    public ClientMenu(BufferedReader bufferedReader, ProductService productService, OrderService orderService, ClientService clientService, ValidationService validationService) {
         this.bufferedReader = bufferedReader;
         this.productService = productService;
         this.orderService = orderService;
-        this.validationService = validationService;
         this.clientService = clientService;
+        this.validationService = validationService;
     }
 
     public void show() throws IOException, BusinessException {

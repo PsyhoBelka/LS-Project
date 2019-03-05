@@ -7,7 +7,6 @@ import ua.rozhkov.project.models.Product;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
-import ua.rozhkov.project.validators.ValidationService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,15 +14,16 @@ import java.math.BigDecimal;
 
 public class AdminMenu {
     private BufferedReader bufferedReader;
-    private ClientService clientService;
     private ProductService productService;
     private OrderService orderService;
+    private ClientService clientService;
 
-    public AdminMenu(BufferedReader bufferedReader, ClientService clientService, ProductService productService, OrderService orderService, ValidationService validationService) {
+
+    public AdminMenu(BufferedReader bufferedReader, ProductService productService, OrderService orderService, ClientService clientService) {
         this.bufferedReader = bufferedReader;
-        this.clientService = clientService;
         this.productService = productService;
         this.orderService = orderService;
+        this.clientService = clientService;
     }
 
     public void show() throws IOException, BusinessException {
@@ -315,6 +315,10 @@ public class AdminMenu {
         }
     }
 
+    private boolean checkOrderExist(long idOrder) {
+        return ((idOrder >= 0) && (orderService.getOrder(idOrder) != null));
+    }
+
     //Special methods
     private int validateInputAge(String input) throws IOException {
         try {
@@ -335,9 +339,4 @@ public class AdminMenu {
             return validateProductPrice(bufferedReader.readLine());
         }
     }
-
-    private boolean checkOrderExist(long idOrder) {
-        return ((idOrder >= 0) && (orderService.getOrder(idOrder) != null));
-    }
-
 }
