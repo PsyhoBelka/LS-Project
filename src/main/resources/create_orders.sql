@@ -5,4 +5,6 @@ create table orders
   client_id bigint not null,
   primary key (id),
   foreign key (client_id) references clients (id)
+  on DELETE SET null
+  on UPDATE CASCADE
 );
