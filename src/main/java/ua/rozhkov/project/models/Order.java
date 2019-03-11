@@ -1,6 +1,7 @@
 package ua.rozhkov.project.models;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
     private long id;
@@ -11,6 +12,10 @@ public class Order {
 
     public Order(Client client) {
         this.client = client;
+    }
+
+    public Order() {
+
     }
 
     public long getId() {
@@ -43,5 +48,15 @@ public class Order {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", orderStatus=" + orderStatus.getStatus() +
+                ", client=" + client.toString() +
+                ", products=" + products.stream().map(product -> (product.toString())).collect(Collectors.joining()) +
+                '}';
     }
 }

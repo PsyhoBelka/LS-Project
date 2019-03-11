@@ -43,7 +43,6 @@ public class OrderServiceImpl implements OrderService {
             for (long idProduct : idsProducts) {
                 orderToCreate.getProducts().add(productDAO.get(idProduct));
             }
-            //            TODO fix here
             return orderDAO.create(orderToCreate);
         }
         return false;
@@ -65,14 +64,14 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public BigDecimal calculateOrder(long idOrder) {
         if (idOrder >= 0) {
-            BigDecimal price = BigDecimal.ZERO;
+            BigDecimal sum = BigDecimal.ZERO;
             Order order = orderDAO.get(idOrder);
             for (Product product : order.getProducts()) {
-                price = price.add(product.getPrice());
+                sum = sum.add(product.getPrice());
             }
-            return price;
+            return sum;
         }
-        return BigDecimal.valueOf(-1);
+        return BigDecimal.ZERO;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class OrdersProductsServiceImpl implements OrdersProductsService {
         if (orderId > 0) {
             try (Connection connection = databaseService.getConnection()) {
                 PreparedStatement preparedStatement = connection.prepareStatement(
-                        "select "
+                        "select * FROM PRODUCTS"
                                                                                  );
             } catch (SQLException e) {
                 e.printStackTrace();
