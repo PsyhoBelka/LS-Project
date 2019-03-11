@@ -2,7 +2,6 @@ package ua.rozhkov.project.views;
 
 import ua.rozhkov.project.exceptions.BusinessException;
 import ua.rozhkov.project.models.Client;
-import ua.rozhkov.project.models.Order;
 import ua.rozhkov.project.services.ClientService;
 import ua.rozhkov.project.services.OrderService;
 import ua.rozhkov.project.services.ProductService;
@@ -79,28 +78,28 @@ public class ClientMenu {
             for (int i = 0; i < idsList.length - 1; i++) {
                 ids[i] = Long.parseLong(idsList[i]);
             }
-            long newOrderId = orderService.createOrder(currentClient, ids);
-            System.out.println("Total price of order: " + orderService.calculateOrder(newOrderId));
+            orderService.createOrder(currentClient, ids);
+            System.out.println("Order created!");
         }
         System.out.println();
     }
 
-    private Client findClient() throws IOException {
-        //TODO fix here
-        /*System.out.println("Enter you phoneNumber(10 digits): ");
-        String input = bufferedReader.readLine();
-        try {
-            if (validationService.validatePhoneNum(input)) {
-                for (Client client : clientService.getAllClients()) {
-                    if (client.getPhoneNumber().equals(input))
-                        return client;
-                }
+    private Client findClient(String... clientPhonenumber) throws IOException {
+        String currClPhoneNum;
+        if (clientPhonenumber.length > 1) {
+            currClPhoneNum = clientPhonenumber[0];
+        } else {
+            System.out.print("Enter you phoneNumber(10 digits): ");
+            currClPhoneNum = bufferedReader.readLine();
+        }
+
+        if (validationService.validatePhoneNum(currClPhoneNum)) {
+            for (Client client : clientService.getAllClients()) {
+                if (client.getPhoneNumber().equals(currClPhoneNum))
+                    return client;
             }
-        } catch (BusinessException ex) {
-            ex.printStackTrace();
+        } else
             System.out.println("Wrong phone number! You unauthorized!");
-            return null;
-        }*/
         return null;
     }
 
@@ -118,26 +117,26 @@ public class ClientMenu {
         boolean res = clientService.createClient(clientName, clientSurname, clientPhoneNumber);
         if (res) {
             System.out.println("Client created!");
-            //TODO fix here
-            //            return clientService.getClient(res);
+            System.out.println("Now you can sign in!");
         }
         System.out.println();
         return null;
     }
 
     private void showClientOrders(Client client) {
-        if (client != null) {
+        //TODO fix here
+        /*if (client != null) {
             for (Order order : orderService.getAllOrders()) {
                 if (order.getClient().equals(client))
                     System.out.println(order);
             }
         } else
             System.out.println("No orders yet!");
-        System.out.println();
+        System.out.println();*/
     }
 
     private void showVariants() {
-        System.out.println("1. Register or sign in");
+        System.out.println("1. Register");
         System.out.println("2. Show products");
         System.out.println("3. Order products");
         System.out.println("4. Show orders");
